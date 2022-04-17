@@ -43,21 +43,32 @@ pred associativity[G: Group] {
         G.table[G.table[g1, g2], g3] = G.table[g1, G.table[g2, g3]]
     }
 }
-
-pred closed[g: Group] {
-    g.table in g.elements->g.elements->g.elements
+  /*--------------------------------------------------------------------*/
+  
+pred closed[G: Group] {
+    G.table in G.elements->G.elements->G.elements
 }
 
-pred axioms[g: Group] {
-    closed[g]
-    haveIdentity[g]
-    haveInverse[g]
-    associativity[g]
+pred axioms[G: Group] {
+    closed[G]
+    haveIdentity[G]
+    haveInverse[G]
+    associativity[G]
 }
 
-// test expect {
-//     uniqueIdentity: { all g: Group | { axioms[g] => one identity[g] } } is theorem for exactly 1 Group, exactly 10 Element
-// }
+-- An abelian group is a commutative group, i.e. g₁ * g₂ = g₂ * g₁.
+pred abelian[G: Group] {
+    all g1, g2 : G.elements | G.table[g1, g2] = G.table[g2, g1]
+}
+
+// limiting to 4 element groups for now?
+test expect {
+    uniqueIdentity: { all G: Group | { axioms[G] => one identity[G] } } for exactly 1 Group, 4 Element is theorem 
+    identityCommutes: {
+        all G: Group | all g : G.elements | {
+            axioms[G] => G.table[identity[G], g] = G.table[g, identity[G]]
+            }} for exactly 1 Group, 4 Element is theorem
+}
 
 // run {
 //     all G: Group | axioms[G]
