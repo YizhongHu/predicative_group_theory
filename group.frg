@@ -7,34 +7,32 @@ sig Group {
     table: func Element -> Element -> Element
 }
 
-
-fun identity[g: Group]: Element {
-    {i: Group.elements | {
-        all e: Group.elements | {
-            i->e->e in g.table
-        }
-    }}
-}
-
-pred haveIdentity[g: Group] {
-    some identity[g]
-}
-
-
-pred haveInverse[g: Group] {
-    let id = identity[g] | {
-        all e: Group.elements | {
-            some einv: Group.elements | {
-                e -> einv -> id in g.table
+fun identity[G: Group]: Element {
+    {id: G.elements | {
+        all g: G.elements | {
+            id->g->g in G.table
             }
         }
     }
 }
 
-pred associativity[g: Group] {
-    all e1, e2, e3: g.elements | {
-        // may only work with dot...
-        g.table[g.table[e1, e2], e3] = g.table[e1, g.table[e2, e3]]
+pred haveIdentity[G: Group] {
+    some identity[G]
+}
+
+pred haveInverse[G: Group] {
+    let id = identity[G] | {
+        all g: G.elements | {
+            some gInv: G.elements | {
+                g -> gInv -> id in G.table
+            }
+        }
+    }
+}
+
+pred associativity[G: Group] {
+    all g1, g2, g3: G.elements | {
+        G.table[G.table[g1, g2], g3] = G.table[g1, G.table[g2, g3]]
     }
 }
 
@@ -54,13 +52,13 @@ pred axioms[g: Group] {
 // } 
 
 run {
-    all g: Group | axioms[g]
-} for exactly 1 Group, exactly 3 Element
+    all G: Group | axioms[G]
+} for exactly 1 Group, exactly 5 Element
 
 
-pred subgroup[s: Group, g: Group] {
-    s.elements in g.elements
-    s.table in g.table
-    closed[g]
-    haveIdentity[g]
+pred subgroup[H: Group, G: Group] {
+    H.elements in G.elements
+    H.table in G.table
+    closed[H]
+    haveIdentity[H]
 }
