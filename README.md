@@ -18,7 +18,7 @@ and a wide array of mathematics. With this in mind, we have two goals:
     c. If g, h ∈ G, then (gh)⁻¹ = h⁻¹g⁻¹
     d. If g ∈ G, then (g⁻¹)⁻¹ = g
 - [ ] [If we have time] homomorphisms - a lot comes out of group isomorphisms
-- [ ] Define subgroups
+- [x] Define subgroups
 - [ ] Simple propositions/preds that we can show hold true for subgroups:
     Let H be a subgroup
     a. For each h₁, h₂ ∈ H, h₁h₂ ∈ H

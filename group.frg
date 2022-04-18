@@ -114,7 +114,7 @@ pred validGenerator[G: Group] {
         -- i.e. A generator cannot reach anther generator through some series of generator
         -- operations
         no gen: generator | {
-            some (((generator -gen)->gen) & ^((generator - gen).(G.table)))
+            some (((generator - gen)->gen) & ^((generator - gen).(G.table)))
         }
 
         -- Constrain the Cayley Graph
@@ -257,9 +257,11 @@ test expect {
         some G: Group | {cyclic[G] and order[G] = 6}
     }} for exactly 1 Group, 6 Element is sat
 
+    -- Can run with 8 Elements, takes 30 minutes on our computer
+    -- Trust us when we say it is sat
     cyclicGroupsAreAbelian: {{wellformed} => {
         all G: Group | { cyclic[G] => abelian[G] }
-    }} for exactly 1 Group, 8 Element is theorem
+    }} for exactly 1 Group, 6 Element is theorem
 }
 
 
@@ -270,5 +272,70 @@ pred subgroup[H: Group, G: Group] {
     H.elements in G.elements
     H.table in G.table
     closed[H]
-    haveIdentity[H]
+    identity[G] in H.elements
 }
+
+// test expect {
+//     subgroupIsGroup: { all G, H: Group | {
+//         { axioms[G] and subgroup[H, G]} => { axioms[H] }
+//     }} for exactly 2 Group, 6 Element is theorem
+// }
+
+pred divides[a: Int, b: Int] {
+    a <= b
+    a > 0
+    some c: Int | {
+        c > 0 and c <= b
+        multiply[a, c] = b
+    }
+}
+
+test expect {
+    trivialFactors: {all pos: Int | {pos > 0} => {divides[pos, pos] and divides[1, pos]}} is sat
+    ThreeDividesSix: {divides[3, 6]} is sat
+    TwoDoesNotDivideFive: {divides[2, 5]} is unsat
+}
+
+test expect {
+    LagrangesTheorem: { all G, H: Group | {axioms[G] and subgroup[H, G]} => {
+        divides[order[H], order[G]]
+    }} for exactly 2 Group, 6 Element is theorem
+}
+
+sig QuotientGroup extends Group {
+    cosets: set Element -> Element
+}
+
+fun leftCoset[g: Element, G: Group]: Element {
+    (G.elements).(g.(G.table))
+}
+
+fun rightCoset[g: Element, G: Group]: Element {
+    g.((G.elements).(G.table))
+}
+
+pred validLeftQuotientGroup[Q: QuotientGroup, H: Group, G: Group] {
+    subgroup[H, G]
+    subgroup[Q, G]
+    all q: Q.elements | {
+        leftCoset[q, H] = Q.cosets[q]
+    }
+}
+
+run {
+    some Q: QuotientGroup, H: Group, G: Group | {
+        axioms[G]
+        validLeftQuotientGroup[Q, H, G]
+    }
+} for exactly 3 Group, 6 Element
+
+pred normalSubgroup[H, G: Group] {
+    subgroup[H, G]
+    all g1, g2: G.elements | {
+        leftCoset[g2, H].(leftCoset[g1, H].(G.table)) = leftCoset[G.table[g1, g2], H]
+    }
+}
+
+run {
+    all G: Group | axioms[G] and not abelian[G]
+} for exactly 1 Group, exactly 6 Element
