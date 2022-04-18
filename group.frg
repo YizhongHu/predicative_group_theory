@@ -86,26 +86,28 @@ test expect {
 -- a combination (under the group operation) of finitely many
 -- elements of the subset and their inverses.
 one sig Generator {
-    generatingSet: set Group->Element
+    generatingSet: set Group->Element,
+    graph: pfunc Group->Element->Element->Element
 }
 
 -- Constrains the validity of a generating set
 pred validGenerator[G: Group] {
-    -- The generating set is a subset of the group
-    G.(Generator.generatingSet) in G.elements
-    -- Every element can be obtained by chaining generator operations (left operations)
-    -- from the identity
-    let id = identity[G] | {
-        G.elements = id.(^((Generator.generatingSet[G]).(G.table)))
+    let id = identity[G], generator = (Generator.generatingSet[G]) | {
+        -- Every element can be obtained by chaining generator operations (left operations)
+        -- from the identity
+        G.elements = id.(^(generator.(G.table)))
+
+        -- ensure that it is a minimal generating set
+        -- i.e. A generator cannot reach anther generator through some series of generator
+        -- operations
+        no gen: generator | {
+            some (((generator -gen)->gen) & ^((generator - gen).(G.table)))
+        }
+
+        -- Constrain the Cayley Graph
+        Generator.graph[G] = (generator->G.elements->G.elements & G.table)
     }
 }
-
-// run {
-//     all G: Group | {
-//         axioms[G]
-//         validGenerator[G]
-//     }
-// } for exactly 1 Group, exactly 3 Element
 
 pred wellformed {
     all G: Group | {
@@ -114,14 +116,111 @@ pred wellformed {
     }
 }
 
+// run {
+//     wellformed
+// } for exactly 1 Group, exactly 2 Element
+
+example TrvialGroup is {wellformed} for {
+    Group = `G0
+    Element = `E0
+    elements = `G0-> `E0
+    table = `G0->`E0->`E0->`E0
+
+    Generator = `Generator0
+}
+
+example CyclicGroupOfOrder2 is {wellformed} for {
+    Group = `G0
+    Element = `E0 + `E1
+    elements = `G0-> `E0 + `G0 -> `E1
+    table = `G0->`E0->`E0->`E0 + `G0->`E0->`E1->`E1 + `G0->`E1->`E0->`E1 + `G0->`E1->`E1->`E0
+
+    Generator = `Generator0
+    generatingSet = `Generator0->`G0->`E1
+    graph = `Generator0->`G0->`E1->`E0->`E1 + `Generator0->`G0->`E1->`E1->`E0 
+}
+
+example CyclicGroupOfOrder3 is {wellformed} for {
+    Group = `G0
+    Element = `E0 + `E1 + `E2
+    elements = `G0-> `E0 + `G0 -> `E1 + `G0 -> `E2
+    table = `G0->`E0->`E0->`E0 + `G0->`E0->`E1->`E1 + `G0->`E1->`E0->`E1 + `G0->`E1->`E1->`E2 
+          + `G0->`E0->`E2->`E2 + `G0->`E1->`E2->`E0 + `G0->`E2->`E2->`E1 + `G0->`E2->`E0->`E2 
+          + `G0->`E2->`E1->`E0
+
+    Generator = `Generator0
+    generatingSet = `Generator0->`G0->`E1
+    graph = `Generator0->`G0->`E1->`E0->`E1 + `Generator0->`G0->`E1->`E1->`E2 +    
+            `Generator0->`G0->`E1->`E2->`E0 
+}
+
+example C2byC2 is {wellformed} for {
+    Group = `G0
+    Element = `E0 + `E1 + `E2 + `E3
+    elements = `G0-> `E0 + `G0 -> `E1 + `G0 -> `E2 + `G0 -> `E3
+    table = `G0->`E0->`E0->`E0 + `G0->`E0->`E1->`E1 + `G0->`E0->`E2->`E2 + `G0->`E0->`E3->`E3
+          + `G0->`E1->`E0->`E1 + `G0->`E1->`E1->`E0 + `G0->`E1->`E2->`E3 + `G0->`E1->`E3->`E2 
+          + `G0->`E2->`E0->`E2 + `G0->`E2->`E1->`E3 + `G0->`E2->`E2->`E0 + `G0->`E2->`E3->`E1 
+          + `G0->`E3->`E0->`E3 + `G0->`E3->`E1->`E2 + `G0->`E3->`E2->`E1 + `G0->`E3->`E3->`E0
+
+    Generator = `Generator0
+    generatingSet = `Generator0->`G0->`E1 + `Generator0->`G0->`E2
+    graph = `Generator0->`G0->`E1->`E0->`E1 + `Generator0->`G0->`E1->`E1->`E0 +               
+            `Generator0->`G0->`E1->`E2->`E3 + `Generator0->`G0->`E1->`E3->`E2 + 
+            `Generator0->`G0->`E2->`E0->`E2 + `Generator0->`G0->`E2->`E1->`E3 + 
+            `Generator0->`G0->`E2->`E2->`E0 + `Generator0->`G0->`E2->`E3->`E1
+}
+
+
+test expect {
+    cayleyGraphEdgeUnique: {{wellformed} => {all G: Group | {
+        all g1, g2: G.elements | lone (Generator.graph[G]).g1.g2
+    }}} for exactly 1 Group, 6 Element is theorem
+
+    cayleyGraphConnected: {{wellformed} => {all G: Group | {
+        let generator = (Generator.generatingSet[G]) | {
+            let edges = generator.(Generator.graph[G]) | {
+                ((G.elements)->(G.elements) - iden) in ^(edges + (~edges))
+            }
+        }
+    }}} for exactly 1 Group, 6 Element is theorem
+}
+
 -- Cyclic group is a group with one generator
 pred cyclic[G: Group] {
+    let id = identity[G] | {
+        some gen: G.elements | {
+            G.elements in id.^(gen.(G.table))
+        }
+    }
+}
+-- An alternative definition of cyclic groups
+pred cyclicAlternative[G: Group] {
     one Generator.generatingSet[G]
-    // let id = identity[G] | {
-    //     some gen: G.elements | {
-    //         G.elements in id.^(gen.(G.table))
-    //     }
-    // }
+}
+
+// run {
+//     wellformed
+//     some G: Group | {
+//         cyclic[G]
+//         not cyclicAlternative[G]
+//     }
+// } for exactly 1 Group, 6 Element 
+
+test expect {
+    -- This is a test for generating set
+    cyclicDefinitionsEquivalentForward: {{wellformed} => {all G: Group | {
+        cyclicAlternative[G] => cyclic[G]
+    }}} for exactly 1 Group, 6 Element is theorem
+
+    -- Unfortunately the other direction does not satisfy
+    cyclicDefinitionsEquivalentBackward: {
+        wellformed
+        some G: Group | {
+            cyclic[G]
+            not cyclicAlternative[G]
+        }
+    } for exactly 1 Group, 6 Element is sat
 }
 
 // run {
@@ -132,6 +231,9 @@ test expect {
     cyclicGroupsExist: {{wellformed} =>{
         some G: Group | cyclic[G]
     }} for exactly 1 Group, 6 Element is sat
+    trivialGroupCyclic: {{wellformed} =>{
+        all G: Group | cyclic[G]
+    }} for exactly 1 Group, 1 Element is theorem
     cyclicGroupsOrder4Exist: {{wellformed} =>{
         some G: Group | {cyclic[G] and order[G] = 4}
     }} for exactly 1 Group, 6 Element is sat
