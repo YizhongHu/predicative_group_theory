@@ -26,14 +26,20 @@ pred haveIdentity[G: Group] {
 -- Axiom 2: Inverse
 -- For any group G, for all elements g ∈ G, there exists a g⁻¹ ∈ G such that g * g⁻¹ = id.
 -- The element g⁻¹ is called the inverse of g.
-pred haveInverse[G: Group] {
+fun rightInverse[g: Element, G: Group]: Element {
     let id = identity[G] | {
-        all g: G.elements | {
-            some gInv: G.elements | {
-                g -> gInv -> id in G.table
-            }
-        }
+        {gInv: G.elements | {g -> gInv -> id in G.table}}
     }
+}
+
+fun leftInverse[g: Element, G: Group]: Element {
+    let id = identity[G] | {
+        {gInv: G.elements | {gInv -> g -> id in G.table}}
+    }
+}
+
+pred haveInverse[G: Group] {
+    all g: G.elements | some rightInverse[g, G]
 }
 
 -- Axiom 3: Associativity
@@ -70,13 +76,20 @@ pred abelian[G: Group] {
     all g1, g2 : G.elements | G.table[g1, g2] = G.table[g2, g1]
 }
 
-// limiting to 4 element groups for now?
+// limiting to 6 element groups for now?
 test expect {
-    uniqueIdentity: { all G: Group | { axioms[G] => one identity[G] } } for exactly 1 Group, 4 Element is theorem 
+    identityUnique: { all G: Group | { axioms[G] => one identity[G] } } for exactly 1 Group, 6 Element is theorem 
     identityCommutes: {
         all G: Group | all g : G.elements | {
             axioms[G] => G.table[identity[G], g] = G.table[g, identity[G]]
-            }} for exactly 1 Group, 4 Element is theorem
+            }} for exactly 1 Group, 6 Element is theorem
+    
+    inverseUnique: { all G: Group | { axioms[G] => {
+        all g: G.elements | one rightInverse[g, G]
+    }}} for exactly 1 Group, 6 Element is theorem
+    inverseCommutes: { all G: Group | { axioms[G] => {
+        all g: G.elements | rightInverse[g, G] = leftInverse[g, G]
+    }}} for exactly 1 Group, 6 Element is theorem
 }
 
 ------------------------------------------------------
@@ -246,7 +259,7 @@ test expect {
 
     cyclicGroupsAreAbelian: {{wellformed} => {
         all G: Group | { cyclic[G] => abelian[G] }
-    }} for exactly 1 Group, 6 Element is theorem
+    }} for exactly 1 Group, 8 Element is theorem
 }
 
 
