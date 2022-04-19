@@ -3,7 +3,7 @@ open "group-defs.frg"
 open "generators.frg"
 open "subgroups.frg"
 
-example TrvialGroup is {wellformed} for {
+example TrvialGroup is {properlyGenerated} for {
     Group = `G0
     Element = `E0
     elements = `G0-> `E0
@@ -12,7 +12,7 @@ example TrvialGroup is {wellformed} for {
     Generator = `Generator0
 }
 
-example CyclicGroupOfOrder2 is {wellformed} for {
+example CyclicGroupOfOrder2 is {properlyGenerated} for {
     Group = `G0
     Element = `E0 + `E1
     elements = `G0-> `E0 + `G0 -> `E1
@@ -23,7 +23,7 @@ example CyclicGroupOfOrder2 is {wellformed} for {
     graph = `Generator0->`G0->`E1->`E0->`E1 + `Generator0->`G0->`E1->`E1->`E0 
 }
 
-example CyclicGroupOfOrder3 is {wellformed} for {
+example CyclicGroupOfOrder3 is {properlyGenerated} for {
     Group = `G0
     Element = `E0 + `E1 + `E2
     elements = `G0-> `E0 + `G0 -> `E1 + `G0 -> `E2
@@ -37,7 +37,7 @@ example CyclicGroupOfOrder3 is {wellformed} for {
             `Generator0->`G0->`E1->`E2->`E0 
 }
 
-example C2byC2 is {wellformed} for {
+example C2byC2 is {properlyGenerated} for {
     Group = `G0
     Element = `E0 + `E1 + `E2 + `E3
     elements = `G0-> `E0 + `G0 -> `E1 + `G0 -> `E2 + `G0 -> `E3
@@ -56,11 +56,11 @@ example C2byC2 is {wellformed} for {
 
 
 test expect {
-    cayleyGraphEdgeUnique: {{wellformed} => {all G: Group | {
+    cayleyGraphEdgeUnique: {{properlyGenerated} => {all G: Group | {
         all g1, g2: G.elements | lone (Generator.graph[G]).g1.g2
     }}} for exactly 1 Group, 6 Element is theorem
 
-    cayleyGraphConnected: {{wellformed} => {all G: Group | {
+    cayleyGraphConnected: {{properlyGenerated} => {all G: Group | {
         let generator = (Generator.generatingSet[G]) | {
             let edges = generator.(Generator.graph[G]) | {
                 ((G.elements)->(G.elements) - iden) in ^(edges + (~edges))
@@ -70,7 +70,7 @@ test expect {
 }
 
 // run {
-//     wellformed
+//     properlyGenerated
 //     some G: Group | {
 //         cyclic[G]
 //         not cyclicAlternative[G]
@@ -79,13 +79,13 @@ test expect {
 
 test expect {
     -- This is a test for generating set
-    cyclicDefinitionsEquivalentForward: {{wellformed} => {all G: Group | {
+    cyclicDefinitionsEquivalentForward: {{properlyGenerated} => {all G: Group | {
         cyclicAlternative[G] => cyclic[G]
     }}} for exactly 1 Group, 6 Element is theorem
 
     -- Unfortunately the other direction does not satisfy
     cyclicDefinitionsEquivalentBackward: {
-        wellformed
+        properlyGenerated
         some G: Group | {
             cyclic[G]
             not cyclicAlternative[G]
@@ -98,19 +98,19 @@ test expect {
 // } for exactly 1 Group, exactly 3 Element
 
 test expect {
-    cyclicGroupsExist: {{wellformed} =>{
+    cyclicGroupsExist: {{properlyGenerated} =>{
         some G: Group | cyclic[G]
     }} for exactly 1 Group, 6 Element is sat
-    trivialGroupCyclic: {{wellformed} =>{
+    trivialGroupCyclic: {{properlyGenerated} =>{
         all G: Group | cyclic[G]
     }} for exactly 1 Group, 1 Element is theorem
-    cyclicGroupsOrder4Exist: {{wellformed} =>{
+    cyclicGroupsOrder4Exist: {{properlyGenerated} =>{
         some G: Group | {cyclic[G] and order[G] = 4}
     }} for exactly 1 Group, 6 Element is sat
-    cyclicGroupsOrder5Exist: {{wellformed} =>{
+    cyclicGroupsOrder5Exist: {{properlyGenerated} =>{
         some G: Group | {cyclic[G] and order[G] = 5}
     }} for exactly 1 Group, 6 Element is sat
-    cyclicGroupsOrder6Exist: {{wellformed} =>{
+    cyclicGroupsOrder6Exist: {{properlyGenerated} =>{
         some G: Group | {cyclic[G] and order[G] = 6}
     }} for exactly 1 Group, 6 Element is sat
 }
