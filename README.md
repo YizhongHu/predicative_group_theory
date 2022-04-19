@@ -14,9 +14,11 @@ and a wide array of mathematics. With this in mind, we have two goals:
 Definitions<br/>
 - [Group Definitions](https://github.com/YizhongHu/final_project/blob/master/group-defs.frg)
   * [Subgroups](https://github.com/YizhongHu/final_project/blob/master/subgroups.frg)
-  * [Generators] (https://github.com/YizhongHu/final_project/blob/master/generators.frg)
+  * [Generators](https://github.com/YizhongHu/final_project/blob/master/generators.frg)
+ 
 Propositions, Lemmas, and Theorems<br/>
 - [Basic Propositions](https://github.com/YizhongHu/final_project/blob/master/basic-propositions.frg)
+
 Testing<br/>
 - [Tests](https://github.com/YizhongHu/final_project/blob/master/group-tests.frg)
 
