@@ -1,12 +1,24 @@
 # Group Theory
-
+- [What are we modeling?](#what-are-we-modeling)
+- [File Structure](#files)
+- [Todo](#todos)
 ## What are we modeling?
 
 Group theory is a way of connecting and generalizing basic structures in mathematics and nature, especially those seen in 
 numbers sets like the integers, geometry, and polynomials. As such, it holds an important role, both in abstract algebra
 and a wide array of mathematics. With this in mind, we have two goals:
 - Model the notion of a group, and generate different groups using Forge.
-- Show basic properties and theorems of groups hold for finite groups.
+- Show basic properties and theorems of groups hold for small-ordered finite groups.
+
+## Files
+Definitions<br/>
+- [Group Definitions](https://github.com/YizhongHu/final_project/blob/master/group-defs.frg)
+  * [Subgroups](https://github.com/YizhongHu/final_project/blob/master/subgroups.frg)
+  * [Generators] (https://github.com/YizhongHu/final_project/blob/master/generators.frg)
+Propositions, Lemmas, and Theorems<br/>
+- [Basic Propositions](https://github.com/YizhongHu/final_project/blob/master/basic-propositions.frg)
+Testing<br/>
+- [Tests](https://github.com/YizhongHu/final_project/blob/master/group-tests.frg)
 
 ## TODOs
 
