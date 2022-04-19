@@ -1,6 +1,7 @@
 # Group Theory
 - [What are we modeling?](#what-are-we-modeling)
 - [File Structure](#files)
+- [List of Results](#list-of-results)
 - [Todo](#todos)
 ## What are we modeling?
 
@@ -22,18 +23,38 @@ Propositions, Lemmas, and Theorems<br/>
 Testing<br/>
 - [Tests](https://github.com/YizhongHu/final_project/blob/master/group-tests.frg)
 
+## List of Results
+The following is a list of propositions, lemmas, and theorems that we've "proved" to hold (at least for finite
+groups of low order). Let *G* be a group, *H* a subgroup, *g*, *gᵢ* ∈ *G*, *h*, *hᵢ* ∈ *H*.
+
+### Small propositions
+- *G* has only one identity element.
+- The identity element commutes.
+- For all *g*, *g⁻¹* is unique.
+- The inverse of *g* commutes with *g*.
+- All subgroups are groups.
+- All subgroups are closed.
+- The identity of *G* is in *H*.
+- If *h ∈ H*, then *h⁻¹ ∈ H*.
+- *G* and *{id}* are subgroups of *G*.
+
+### Lemmas
+- All cyclic groups are abelian.
+
+### Theorems
+- Lagrange's Theorem: |H| divides |G|
 ## TODOs
 
 - [x] Write predicates representing the group axioms: identity, inverse, associativity. Then write
    predicates that represent useful properties: abelian, cyclic, symmetric, permutation groups
-- [ ] Simple propositions/preds that we can show hold true:
+- [x] Simple propositions/preds that we can show hold true:
     a. The identity element is unique
     b. Each element has only one inverse
     c. If g, h ∈ G, then (gh)⁻¹ = h⁻¹g⁻¹
     d. If g ∈ G, then (g⁻¹)⁻¹ = g
 - [ ] [If we have time] homomorphisms - a lot comes out of group isomorphisms
 - [x] Define subgroups
-- [ ] Simple propositions/preds that we can show hold true for subgroups:
+- [x] Simple propositions/preds that we can show hold true for subgroups:
     Let H be a subgroup
     a. For each h₁, h₂ ∈ H, h₁h₂ ∈ H
     b. e ∈ H
