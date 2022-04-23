@@ -11,10 +11,6 @@ open "group-defs.frg"
 -- such that every element of G can be expressed as
 -- a combination (under the group operation) of finitely many
 -- elements of S and their inverses.
-// one sig Generator {
-//     generatingSet: set Group->Element,
-//     graph: pfunc Group->Element->Element->Element
-// }
 one sig Generator {
     generatingSet: set Element
 }

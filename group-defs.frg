@@ -4,7 +4,7 @@
 sig Element {}
 sig Group { 
     elements: set Element,
-    table: func Element -> Element -> Element
+    table: pfunc Element -> Element -> Element
 }
  /*--------------------------- Group Axioms ---------------------------*/
 -- Axiom 1: Identity
