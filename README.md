@@ -1,6 +1,6 @@
 # Group Theory
 - [What are we modeling?](#what-are-we-modeling)
-- [File Structure](#files)
+- [File Structure](#file-structure)
 - [List of Results](#list-of-results)
 - [Todo](#todos)
 ## What are we modeling?
@@ -11,11 +11,12 @@ and a wide array of mathematics. With this in mind, we have two goals:
 - Model the notion of a group, and generate different groups using Forge.
 - Show basic properties and theorems of groups hold for small-ordered finite groups.
 
-## Files
+## File Structure
 Definitions<br/>
 - [Group Definitions](https://github.com/YizhongHu/final_project/blob/master/group-defs.frg)
   * [Subgroups](https://github.com/YizhongHu/final_project/blob/master/subgroups.frg)
   * [Generators](https://github.com/YizhongHu/final_project/blob/master/generators.frg)
+  * [Homomorphisms](https://github.com/YizhongHu/final_project/blob/master/homomorphisms.frg)
  
 Propositions, Lemmas, and Theorems<br/>
 - [Basic Propositions](https://github.com/YizhongHu/final_project/blob/master/basic-propositions.frg)
