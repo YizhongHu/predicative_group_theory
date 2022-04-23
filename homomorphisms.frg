@@ -87,12 +87,56 @@ pred trivialMap[hom: Homomorphism] {
     image[hom] = identity[hom.codomain]
 }
 
-run {
-    all G : Group | axioms[G]
-    all hom : Homomorphism | validHomomorphism[hom] and injective[hom] and (order[hom.domain] = 3) and !isomorphism[hom]
-} for exactly 1 Homomorphism, exactly 2 Group, 10 Element
 
-run {
-    all G : Group | axioms[G]
-    all hom : Homomorphism | validHomomorphism[hom] and !endomorphism[hom] and !trivialMap[hom]
-} for exactly 1 Homomorphism, exactly 2 Group, 10 Element
+
+test expect {
+    -- There's an injective homomorphism from group of #3 to cyclic subgroup of #6.
+    mod3toMod6Subg: {
+        all G : Group | axioms[G]
+        all hom : Homomorphism | {
+            validHomomorphism[hom]
+            injective[hom]
+            (order[hom.domain] = 3) and (order[hom.codomain] = 6)
+        }
+    } for exactly 1 Homomorphism, exactly 2 Group, 9 Element is sat
+
+    -- There's no injective homomorphism from group of #3 to cyclic subset of #5.
+    noMod3toMod5Subg: {
+        all G : Group | axioms[G]
+        all hom : Homomorphism | {
+            validHomomorphism[hom]
+            injective[hom]
+            (order[hom.domain] = 3) and (order[hom.codomain] = 5)
+        }
+    } for exactly 1 Homomorphism, exactly 2 Group, 8 Element is unsat
+    
+    -- Not working! Also note: second order quantification so v slow
+    -- The preimage of the identity of the codomain is exactly the identity of the
+    -- domain for all isomorphisms.
+    // isomorphismIffTrivialKer: {
+    //     all G : Group | axioms[G]
+    //     all hom : Homomorphism | let G = hom.domain {
+    //         validHomomorphism[hom] => {
+    //             injective[hom] iff (kernel[hom] = identity[G])
+    //         }
+    //     }
+    // } for exactly 1 Homomorphism, exactly 2 Group, 8 Element is theorem
+
+}
+// run {
+//     all G : Group | axioms[G]
+//     all hom : Homomorphism | {
+//         validHomomorphism[hom]
+//         injective[hom]
+//         !kernel[hom] = identity[hom.domain]
+//     }
+// } for exactly 1 Homomorphism, exactly 2 Group, 9 Element
+// run {
+//     all G : Group | axioms[G]
+//     all hom : Homomorphism | validHomomorphism[hom] and injective[hom] and (order[hom.domain] = 3) and !isomorphism[hom]
+// } for exactly 1 Homomorphism, exactly 2 Group, 10 Element
+
+// run {
+//     all G : Group | axioms[G]
+//     all hom : Homomorphism | validHomomorphism[hom] and !endomorphism[hom] and !trivialMap[hom]
+// } for exactly 1 Homomorphism, exactly 2 Group, 10 Element

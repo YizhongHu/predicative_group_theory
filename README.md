@@ -57,12 +57,14 @@ Updated 4.23.22
   * [ ] tests + examples
   * [ ] visualization for Cayley graph
 - homomorphisms.frg
+  * [ ] fix inj <=/=> ker = {id} issue
   * [ ] tests + examples
   * [ ] visualization
   * [ ] look into showable theorems
 - overall
   * [ ] think about optimization?
   * [ ] dip our toes into rings?
+  * [ ] refactor and fix tests
 
 <!-- - [x] Write predicates representing the group axioms: identity, inverse, associativity. Then write
    predicates that represent useful properties: abelian, cyclic, symmetric, permutation groups
