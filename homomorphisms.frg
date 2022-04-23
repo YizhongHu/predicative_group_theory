@@ -15,6 +15,9 @@ pred validHomomorphism[hom: Homomorphism] {
     -- The mapping is from elements of the domain to elements of the codomain.
         all e1, e2 : Element | e1->e2 in phi => (e1 in G.elements and e2 in H.elements)
 
+    -- All elements of the domain are mapped.
+        all g : G.elements | some h : H.elements | phi[g] = h
+
     -- The mapping maintains algebraic structure.
         all g1, g2 : G.elements | {
             phi[G.table[g1, g2]] = H.table[phi[g1], phi[g2]]
@@ -78,7 +81,13 @@ fun image[hom: Homomorphism] : Element {
     }
 }
 
+-- The trivial map is the homomorphism that maps all elements of the domain to the
+-- identity of the codomain.
+pred trivialMap[hom: Homomorphism] {
+    image[hom] = identity[hom.codomain]
+}
+
 run {
     all G : Group | axioms[G]
-    all hom : Homomorphism | validHomomorphism[hom] and !endomorphism[hom]
+    all hom : Homomorphism | validHomomorphism[hom] and !endomorphism[hom] and !trivialMap[hom]
 } for exactly 1 Homomorphism, exactly 2 Group, 10 Element
