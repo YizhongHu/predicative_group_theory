@@ -89,5 +89,10 @@ pred trivialMap[hom: Homomorphism] {
 
 run {
     all G : Group | axioms[G]
+    all hom : Homomorphism | validHomomorphism[hom] and injective[hom] and (order[hom.domain] = 3) and !isomorphism[hom]
+} for exactly 1 Homomorphism, exactly 2 Group, 10 Element
+
+run {
+    all G : Group | axioms[G]
     all hom : Homomorphism | validHomomorphism[hom] and !endomorphism[hom] and !trivialMap[hom]
 } for exactly 1 Homomorphism, exactly 2 Group, 10 Element

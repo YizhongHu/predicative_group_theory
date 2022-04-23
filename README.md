@@ -45,8 +45,26 @@ groups of low order). Let *G* be a group, *H* a subgroup, *g*, *gᵢ* ∈ *G*, *
 ### Theorems
 - Lagrange's Theorem: |H| divides |G|
 ## TODOs
+Updated 4.23.22
+- group-defs.frg
+  * [ ] symmetric pred
+  * [ ] permutation pred
+  * [ ] (maybe) simpler cyclic pred
+  * [ ] visualization for Cayley table
+- subgroups.frg
+  * [ ] write todo list for subgroups.frg
+- generators.frg
+  * [ ] tests + examples
+  * [ ] visualization for Cayley graph
+- homomorphisms.frg
+  * [ ] tests + examples
+  * [ ] visualization
+  * [ ] look into showable theorems
+- overall
+  * [ ] think about optimization?
+  * [ ] dip our toes into rings?
 
-- [x] Write predicates representing the group axioms: identity, inverse, associativity. Then write
+<!-- - [x] Write predicates representing the group axioms: identity, inverse, associativity. Then write
    predicates that represent useful properties: abelian, cyclic, symmetric, permutation groups
 - [x] Simple propositions/preds that we can show hold true:
     a. The identity element is unique
@@ -66,4 +84,4 @@ groups of low order). Let *G* be a group, *H* a subgroup, *g*, *gᵢ* ∈ *G*, *
   • If G is a finite group of order p² for some prime number p, then G is abelian
   • If Sₙ is the permutation group of {1,...,n}, then for n ≥ 3, Sₙ is non-abelian
   • First Sylow Theorem: If G is a finite group such that pⁿ | |G| for a prime p, then there
-      exists a subgroup S ⊆ G such that |S| = pⁿ
+      exists a subgroup S ⊆ G such that |S| = pⁿ -->
