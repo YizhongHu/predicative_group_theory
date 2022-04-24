@@ -3,14 +3,51 @@ d3.selectAll("svg > *").remove();
 
 // Can display elements as letters or colors
 const DISPLAY_TYPE = "colors"; //"colors" or "letters"
-const RED = "#df4772";
-const ORANGE = "#ff9500";
-const YELLOW = "#f6ff00";
-const GREEN = "#d5f2d5";
-const BLUE = "#1ee7f7";
-const INDIGO = "#1e2df7";
-const VIOLET = "#bb0fe2";
-const PINK = "#ff0ba1";
+const COLOR_SCHEME = "normal"; //"normal", "pastel", "ruby", "sandstone"
+
+if(COLOR_SCHEME == "normal") {
+    RED = "#df4772";
+    ORANGE = "#ff9500";
+    YELLOW = "#f6ff00";
+    GREEN = "#d5f2d5";
+    BLUE = "#1ee7f7";
+    INDIGO = "#1e2df7";
+    VIOLET = "#bb0fe2";
+    PINK = "#ff0ba1";
+}
+if(COLOR_SCHEME == "pastel") {
+    // pastel color scheme
+    RED = "#fde4cf";
+    ORANGE = "#ffcfd2";
+    YELLOW = "#f1c0e8";
+    GREEN = "#cfbaf0";
+    BLUE = "#a3c4f3";
+    INDIGO = "#90dbf4";
+    VIOLET = "#8eecf5";
+    PINK = "#98f5e1";
+}
+if(COLOR_SCHEME == "ruby") {
+// ruby color scheme
+    RED = "#590d22";
+    ORANGE = "#800f2f";
+    YELLOW = "#a4133c";
+    GREEN = "#c9184a";
+    BLUE = "#ff4d6d";
+    INDIGO = "#ff758f";
+    VIOLET = "#ff8fa3";
+    PINK = "#ffb3c1";
+}
+if(COLOR_SCHEME == "sandstone") {
+    // sandstone color scheme
+    RED = "#ff8800";
+    ORANGE = "#ff9500";
+    YELLOW = "#ffa200";
+    GREEN = "#ffaa00";
+    BLUE = "#ffb700";
+    INDIGO = "#ffc300";
+    VIOLET = "#ffd000";
+    PINK = "#ffdd00";
+}
 
 function intToABC(int) {
     abc = "abcdefghijklmnopqrstuvwxyz";
@@ -95,7 +132,6 @@ function printGroup(groupAtom, yoffset) {
         }
     }
 }
-
 
 var offset = 0
 for(b = 0; b <= 10; b++) {  
