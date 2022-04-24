@@ -13,10 +13,10 @@ sig Homomorphism {
 pred validHomomorphism[hom: Homomorphism] {
     let G = hom.domain, H = hom.codomain, phi = hom.mapping | {
     -- The mapping is from elements of the domain to elements of the codomain.
-        all e1, e2 : Element | e1->e2 in phi => (e1 in G.elements and e2 in H.elements)
+        phi in G.elements -> H.elements
 
     -- All elements of the domain are mapped.
-        all g : G.elements | some h : H.elements | phi[g] = h
+        all g : G.elements | some g.phi
 
     -- The mapping maintains algebraic structure.
         all g1, g2 : G.elements | {
@@ -27,20 +27,16 @@ pred validHomomorphism[hom: Homomorphism] {
 
 -- An injective (or one-to-one) homomorphism is one such that each input has a unique output. 
 pred injective[hom: Homomorphism] {
-    let G = hom.domain, phi = hom.mapping | {
-        all g1, g2 : G.elements | {
-            phi[g1] = phi[g2] => g1 = g2
-        }
+    let H = hom.codomain, phi = hom.mapping | {
+        all h : H.elements | lone phi.h
     }
 }
 
 -- A surjective (or onto) homomorphism is one such that each element of the codomain is in
 -- image of the homomorphism.
 pred surjective[hom: Homomorphism] {
-    let G = hom.domain, H = hom.codomain, phi = hom.mapping | {
-        all h : H.elements | {
-            some g : G.elements | phi[g] = h
-        }
+    let H = hom.codomain, phi = hom.mapping | {
+        all h : H.elements | some phi.h
     }
 }
 
@@ -66,19 +62,13 @@ pred automorphism[hom: Homomorphism] {
 -- The kernel of a homomorphism is the set of elements of the domain which are sent
 -- to the identity of H.
 fun kernel[hom: Homomorphism] : Element {
-    let G = hom.domain, H = hom.codomain, phi = hom.mapping | {
-        {g : G.elements | phi[g] = identity[H]}
-    }
+    let H = hom.codomain, phi = hom.mapping | phi.(identity[H])
 }
 
 -- The image of a homomorphism is the set of elements of the codomain which are
 -- hit by the mapping of the domain onto the codomain.
 fun image[hom: Homomorphism] : Element {
-    let G = hom.domain, H = hom.codomain, phi = hom.mapping | {
-        {h : H.elements | {
-            some g : G.elements | phi[g] = h
-        }}
-    }
+    let G = hom.domain, phi = hom.mapping | (G.elements).phi
 }
 
 -- The trivial map is the homomorphism that maps all elements of the domain to the
