@@ -85,8 +85,5 @@ pred abelian[G: Group] {
 pred symmetric[G: Group] {
 }
 
-pred permutation[G: Group] {
-    --check if it's a permutation group? i need to look at the wikipedia page
-    -- before knowing if this is a good idea lol
-}
 /*--------------------------------------------------------------------*/
+run {all g : Group | axioms[g]} for 1 Group

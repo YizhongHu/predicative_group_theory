@@ -87,7 +87,19 @@ pred trivialMap[hom: Homomorphism] {
     image[hom] = identity[hom.codomain]
 }
 
+-- Find two non-isomorphic groups
+run {
+    all G : Group | axioms[G] and order[G] = 6
 
+    all G1, G2 : Group | {
+        no hom : Homomorphism {
+            hom.domain = G1
+            hom.codomain = G2
+            isomorphism[hom]
+        }
+    }
+
+}for exactly 2 Group, exactly 1 Homomorphism, 6 Element
 
 test expect {
     -- There's an injective homomorphism from group of #3 to cyclic subgroup of #6.
