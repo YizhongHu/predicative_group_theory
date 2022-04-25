@@ -34,14 +34,14 @@ Testing<br/>
 
 ## Overview
 ### Groups
-A **group** (`Group`) is a set (of `Element`) together with a binary operation that acts on the set which satisfies three axioms:
+A **group** (`Group`) is a set (of `Element`) together with a binary operation (`table`) that acts on the set, which satisfies three axioms:
 - Identity: (`haveIdentity`) The group contains an element *e* such that for all *g* in the group, *ge = eg = G*.
-- Inverse: (`haveInverse`) Each element in the group has an inverse, i.e. for each element *g*, there is a *g^^-1^^* such that 
-  *gg^^-1^^ = 1*.
-- Associativity: (`associativity`) For all elements g₁, g₂, g₃ ∈ G, it holds that g₁(g₂g₃) = (g₁g₂)g₃.
-These axioms bestow a sense of structure to the set. Some common examples of finite groups are the set of integers modulo some number with 
+- Inverse: (`haveInverse`) Each element in the group has an inverse, i.e. for each element *g*, there is a *g⁻¹* such that 
+  *gg⁻¹ = 1*.
+- Associativity: (`associativity`) For all elements g₁, g₂, g₃ ∈ G, it holds that g₁(g₂g₃) = (g₁g₂)g₃.<br/><br/>
+These axioms bestow a sense of structure on the set. Some common examples of finite groups are the set of integers modulo some number with 
 addition, the set of permutations of a set with the operation of doing one permutation after the other, and the set of symmetries of a 
-polygon. We'll quickly define some terminology that will prove useful:
+polygon. We'll define some terminology that will prove useful:
 
 <div align="center">
  
