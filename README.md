@@ -24,6 +24,30 @@ Propositions, Lemmas, and Theorems<br/>
 Testing<br/>
 - [Tests](https://github.com/YizhongHu/final_project/blob/master/group-tests.frg)
 
+## Visualizers
+To make understanding Forge's output easier, we've included two visualizers:
+- [Cayley Table Visualizer](https://github.com/YizhongHu/final_project/blob/master/visualization/group-viz.js)<br/>
+  This visualizer displays the Cayley table of all groups in the instance. The output is read as the cell in row *i* 
+  and column *j* is *i ⬝ j*. At the top of the script, there are two variables the user can manually change: the 
+  `DISPLAY_TYPE` and `COLOR_SCHEME` variables. Setting the former to `"colors"` removes the letters and replaces them 
+  with colored rectangles, where each element has a unique color. Changing `COLOR_SCHEME` to `"normal"`, `"pastel"`, 
+  `"ruby"`, or `"sandstone"` changes the color scheme. The following are some example outputs:<br/>
+ <p align="center">
+  <img src="visualization/CayleyTableEx.png" alt="The Cayley Table of the Group (C__2 x C__2)" width="200"/>
+  <img src="visualization/TwoColorEx.png" alt="Two Groups as Colored Cayley Tables" width="100"/>
+ <p/>
+ 
+- [Cayley Tile Visualizer](https://github.com/YizhongHu/final_project/blob/master/visualization/tiling-viz.js)<br/>
+  This visualizer displays a tiling of the colored Cayley table. Specifically, the colored Cayley table is reflected twice 
+  to get a 2-table-by-2-table block, which is then translated across the plane. The user can manually change the `COLOR_SCHEME` 
+  variable to change the color scheme, and the `SCALE` variable to zoom in and out. The following are some cool example outputs:<br/>
+  <p align="center">
+   <img src="visualization/ExampleTiling1.png" alt="Some Tiling of Group of Order 4" width="200"/>
+  <img src="visualization/ExampleTiling2.png" alt="Some Tiling of Group of Order 8" width="200"/>
+  <img src="visualization/ExampleTiling3.png" alt="Some Tiling of Group of Order 8" width="200"/>
+ <p/>
+  
+
 ## List of Results
 The following is a list of propositions, lemmas, and theorems that we've "proved" to hold (at least for finite
 groups of low order). Let *G* be a group, *H* a subgroup, *g*, *gᵢ* ∈ *G*, *h*, *hᵢ* ∈ *H*.
