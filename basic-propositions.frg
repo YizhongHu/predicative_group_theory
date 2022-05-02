@@ -43,9 +43,9 @@ test expect {
 test expect {
     -- TODO: CAN'T FIGURE OUT WHY THIS IS BROKEN WHEN GROUP'S FUNC -> PFUNC
     -- A subgroup of a group is also abides by the group axioms.
-    // subgroupIsGroup: { all G, H : Group | {
-    //     {axioms[G] and subgroup[H, G]} => axioms[H]
-    // }} for exactly 2 Group, 6 Element is theorem
+    subgroupIsGroup: { all G, H : Group | {
+        {axioms[G] and subgroup[H, G]} => axioms[H]
+    }} for exactly 2 Group, 6 Element is theorem
 
     -- The identity of G is in H.
     subgroupsIsClosed: { all G, H : Group | {
@@ -64,4 +64,34 @@ test expect {
     identityIsSubgroup: { all G : Group | some e : Group | {
         (axioms[G] and e.elements = identity[G]) => subgroup[e, G]
     }} for exactly 2 Group, 6 Element is theorem
+}
+
+-- tests for normal subgroups
+test expect {
+    GroupIsNormal: { -- G is a normal subgroup of G
+        all G : Group {
+            axioms[G] => normalSubgroup[G, G]
+        }
+    } for exactly 1 Group, 6 Element is theorem
+
+    TrivialIsNormal: { -- {e} is a normal subgroup of G
+        all G, H : Group {
+            (axioms[G] and subgroup[H, G] and trivial[H]) => normalSubgroup[H, G]
+        }
+    } for exactly 2 Group, 6 Element is theorem
+
+    A3inS3IsNormal: { -- Any normal subgroup of S3 is of order 3 or trivial
+        all disj G, H : Group {
+            {axioms[G]
+            order[G] = 6
+            !abelian[G] -- These three describe S₃
+            normalSubgroup[H, G]} => order[H] != 2
+        }
+    } for exactly 2 Group, exactly 6 Element is theorem
+
+    AbelianImpliesSimple: { -- Any abelian group is simple
+        all G : Group {
+            abelian[G] => simple[G]
+        }
+    } for exactly 1 Group, 3 Element is theorem -- have to set element count really low (higher order)
 }

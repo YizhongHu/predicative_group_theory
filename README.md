@@ -38,7 +38,7 @@ A **group** (`Group`) is a set (of `Element`) together with a binary operation (
 - Identity: (`haveIdentity`) The group contains an element *e* such that for all *g* in the group, *ge = eg = G*.
 - Inverse: (`haveInverse`) Each element in the group has an inverse, i.e. for each element *g*, there is a *g⁻¹* such that 
   *gg⁻¹ = 1*.
-- Associativity: (`associativity`) For all elements g₁, g₂, g₃ ∈ G, it holds that g₁(g₂g₃) = (g₁g₂)g₃.<br/><br/>
+- Associativity: (`associativity`) For all elements *g₁, g₂, g₃ ∈ G*, it holds that *g₁(g₂g₃) = (g₁g₂)g₃*.<br/><br/>
 These axioms bestow a sense of structure on the set. Some common examples of finite groups are the set of integers modulo some number with 
 addition, the set of permutations of a set with the operation of doing one permutation after the other, and the set of symmetries of a 
 polygon. We'll define some terminology that will prove useful:
@@ -47,7 +47,7 @@ polygon. We'll define some terminology that will prove useful:
  
 | Term        | Forge Pred |                                       Definition                                         | Example                 |
 | :---        |    :----:  | :----:                                                                                   |              ---:       |
-| Abelian     | `abelian`  | An abelian group is a commutative group, <br/>i.e. g₁ * g₂ = g₂ * g₁ for all g₂, g₁.          | Integers mod 5, +       |
+| Abelian     | `abelian`  | An abelian group is a commutative group, <br/>i.e. *g₁ * g₂ = g₂ * g₁* for all *g₂, g₁*.          | Integers mod 5, +       |
 | Cyclic      | `cyclic`   | A cyclic group is a group that can be generated<br/> by one element.                          | Integers mod 5, +       |
 | Order       | `order`    | The order of a group *G* (denoted *\|G\|*) is the<br/> number of elements in the group's set. | \|Integers mod 5\| = 5  |
 | todo  | ... | ... | ... |
@@ -55,8 +55,16 @@ polygon. We'll define some terminology that will prove useful:
 </div>
 
 #### Subgroups
-talk about what a subgroup is, why useful, how we define in forge : )
-
+After defining group axioms and properties, it's not a far step to let ourselves be curious about subsets of groups. We'll define the notion 
+of subsets of a group which also abide by the group axioms as a **subgroup**. In fact, we can be more minimal about our definition:
+```
+pred subgroup[H: Group, G: Group] {
+    subset[H, G]
+    closed[H]
+    identity[G] in H.elements
+}
+```
+I.e., we only need to ensure that *H* is a subset of *G*, is closed, and contains the identity of *G*. 
 #### Generators
 talk about generators and Cayley graphs
 

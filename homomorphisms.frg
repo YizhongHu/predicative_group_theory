@@ -1,5 +1,6 @@
 #lang forge
 open "group-defs.frg"
+open "generators.frg"
 /*------------------------- Group Homomorphisms ---------------------------*/
 /*   A group homomorphism is a map between two groups which maintains the  */
 /*     algebraic structure of the domain. Formally, for groups G and H,    */
@@ -76,8 +77,6 @@ fun image[hom: Homomorphism] : Element {
 pred trivialMap[hom: Homomorphism] {
     image[hom] = identity[hom.codomain]
 }
-
-run {all G : Group | axioms[G] and order[G] = 4} for exactly 1 Group, exactly 4 Element
 
 -- Find two non-isomorphic groups
 run {

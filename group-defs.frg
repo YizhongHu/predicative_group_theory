@@ -54,6 +54,11 @@ pred associativity[G: Group] {
 -- For all elements g₁, g₂ ∈ G, g₁ * g₂ ∈ G
 pred closed[G: Group] {
     G.table in G.elements->G.elements->G.elements
+    all g1, g2 : G.elements {
+        some g3 : G.elements {
+            g1->g2->g3 in G.table
+        }
+    }
 }
  /*--------------------------------------------------------------------*/
   
@@ -83,6 +88,10 @@ pred abelian[G: Group] {
 // }
 
 pred symmetric[G: Group] {
+}
+
+pred trivial[G: Group] {
+    order[G] = 1
 }
 
 /*--------------------------------------------------------------------*/
