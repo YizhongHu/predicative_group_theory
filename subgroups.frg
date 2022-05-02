@@ -78,8 +78,16 @@ pred normalSubgroup[H, G: Group] {
     }
 }
 
--- A simple group has only normal groups as subsets
+-- A simple group G is a group with only G and {id} as its normal subgroups
 pred simple[G : Group] {
+    all H : Group | {
+        (subgroup[H, G] and !trivial[H] and H.elements != G.elements) =>
+            !normalSubgroup[H, G]
+    }
+}
+
+-- A Dedekind group has only normal groups as subgroups
+pred dedekind[G : Group] {
     all H : Group | {
         subgroup[H, G] => normalSubgroup[H, G]
     }

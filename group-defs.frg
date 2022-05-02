@@ -80,19 +80,10 @@ pred abelian[G: Group] {
     all g1, g2 : G.elements | G.table[g1, g2] = G.table[g2, g1]
 }
 
-// pred cyclic[G: Group] {
-//     --there's gotta be a better way to write cyclic than with the generators sig
-//     // some g : G.elements | all g2 : G.elements - g | {
-//     //     g2 in g.(^...) --g2 reachable from G.table[g, g], or something like that
-//     // }
-// }
-
+-- TODO: is this possible conceptually?
 pred symmetric[G: Group] {
 }
 
 pred trivial[G: Group] {
     order[G] = 1
 }
-
-/*--------------------------------------------------------------------*/
-run {all g : Group | axioms[g]} for 1 Group

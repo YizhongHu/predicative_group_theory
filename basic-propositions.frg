@@ -89,9 +89,9 @@ test expect {
         }
     } for exactly 2 Group, exactly 6 Element is theorem
 
-    AbelianImpliesSimple: { -- Any abelian group is simple
+    AbelianImpliesDedekind: { -- Any abelian group is a Dedekind group
         all G : Group {
-            abelian[G] => simple[G]
+            abelian[G] => dedekind[G]
         }
     } for exactly 1 Group, 3 Element is theorem -- have to set element count really low (higher order)
 }
