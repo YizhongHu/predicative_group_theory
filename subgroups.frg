@@ -48,28 +48,17 @@ test expect {
 
 -- This function assumes: a is an element of G and H is a subgroup of G
 fun leftCoset[a : Element, H, G : Group]: Element {
-    {g : G.elements | all h : H.elements | G.table[a, h] = g}
+    {g : G.elements | some h : H.elements | G.table[a, h] = g}
 }
 
 -- This function assumes: a is an element of G and H is a subgroup of G
 fun rightCoset[a: Element, H, G: Group]: Element {
-    {g : G.elements | all h : H.elements | G.table[h, a] = g}
+    {g : G.elements | some h : H.elements | G.table[h, a] = g}
 }
 
 /*---------------------------- Normal Subgroups ----------------------------*/
 /*   A normal subgroup of a group is one in which for all h ∈ H and g ∈ G,  */
 /*                                ghg⁻¹ ∈ N.                                */
-/* There are many equivalent definitions for normal subgroups, but we find  */
-/*    comparing the left and right cosets to be a well-suited balance of    */
-/*  efficient and relevant. Specifically, the coset definition of a normal  */
-/*   subgroup is: a subgroup H of G is normal if and only if forall a ∈ G,  */
-/*                                 aH = Ha.                                 */
-// pred normalSubgroup[H, G: Group] {
-//     subgroup[H, G]
-//     all a: G.elements | {
-//         leftCoset[a, H, G] = rightCoset[a, H, G]
-//     }
-// }
 
 pred normalSubgroup[H, G: Group] {
     subgroup[H, G]
@@ -93,26 +82,46 @@ pred dedekind[G : Group] {
     }
 }
 
-// sig QuotientGroup extends Group {
-//     cosets: set Element -> Element
-// }
+/*----------------------------- Quotient Groups ------------------------------*/
+/* Let G be a group, and N a normal subgroup of G. Our goal is to create a    */
+/* new group from G without necessarily creating a subgroup. What we can do   */
+/* is take N and all (left) cosets of N, and aggregate them into a new set Q. */
+/* We can then define the operation on Q to be (aN)(bN) = (ab)N. This happens */
+/* to bestow a group structure on Q, so long as N is normal.                  */
 
+sig ResidueClass extends Element {
+    residues: set Element
+}
 
-// pred validLeftQuotientGroup[Q: QuotientGroup, H: Group, G: Group] {
-//     subgroup[H, G]
-//     subgroup[Q, G]
-//     all q: Q.elements | {
-//         leftCoset[q, H] = Q.cosets[q]
-//     }
-// }
+sig QuotientGroup extends Group {}
 
-// run {
-//     some Q: QuotientGroup, H: Group, G: Group | {
-//         axioms[G]
-//         validLeftQuotientGroup[Q, H, G]
-//     }
-// } for exactly 3 Group, 6 Element
+-- TESTME
+pred validQuotientGroup[Q : QuotientGroup, N : Group, G : Group] {
+    normalSubgroup[N, G]             -- N is a normal subgroup of G
+    Q.elements in ResidueClass       -- Quotient Group only has residues as els
+    !(G.elements) in ResidueClass    -- No element of G is a residue class 
+    ResidueClass.residues in Element -- Residues only have elements (not other residues)
+    all a : G.elements | {           -- Each residue corresponds to a coset
+        some res : Q.elements {
+            res.residues = leftCoset[a, N, G]
+        }
+    }
+    all r1, r2, r3 : ResidueClass | { -- Operation of Q defined by G
+        r1->r2->r3 in Q.table iff {
+            some e1 : r1.residues |
+            some e2 : r2.residues |
+            some e3 : r3.residues |
+            e1->e2->e3 in G.table
+        }
+    }
+}
 
-// run {
-//     all G: Group | axioms[G] and not abelian[G]
-// } for exactly 1 Group, exactly 6 Element
+-- All instances should make Q isomorphic to C3
+run {
+    some disj G, N : Group | some Q : QuotientGroup {
+        order[G] = 6
+        order[N] = 2
+        axioms[G]
+        validQuotientGroup[Q, N, G]
+    }
+} for exactly 1 QuotientGroup, exactly 3 Group, 10 Element, 4 ResidueClass
