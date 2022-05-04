@@ -36,11 +36,11 @@ pred divides[a: Int, b: Int] {
 
 -- Lagrange's Theorem: For H a subgroup of G, the order of H divides the
 -- order of G.
-test expect {
-    LagrangesTheorem: { all G, H: Group | {
-        {axioms[G] and subgroup[H, G]} => {divides[order[H], order[G]]}}
-        } for exactly 2 Group, 7 Element is theorem
-}
+// test expect {
+//     LagrangesTheorem: { all G, H: Group | {
+//         {axioms[G] and subgroup[H, G]} => {divides[order[H], order[G]]}}
+//         } for exactly 2 Group, 7 Element is theorem
+// }
 
 /*-------------------------------- Cosets --------------------------------*/
 /*       The left coset of a subgroup H of G and some element a is        */
@@ -58,7 +58,7 @@ fun rightCoset[a: Element, H, G: Group]: Element {
 
 /*---------------------------- Normal Subgroups ----------------------------*/
 /*   A normal subgroup of a group is one in which for all h ∈ H and g ∈ G,  */
-/*                                ghg⁻¹ ∈ N.                                */
+/*                                ghg⁻¹ ∈ H.                                */
 
 pred normalSubgroup[H, G: Group] {
     subgroup[H, G]
@@ -97,12 +97,21 @@ sig QuotientGroup extends Group {}
 
 -- TESTME
 pred validQuotientGroup[Q : QuotientGroup, N : Group, G : Group] {
+    --SIMPLIFY ME
     normalSubgroup[N, G]             -- N is a normal subgroup of G
     Q.elements in ResidueClass       -- Quotient Group only has residues as els
-    !(G.elements) in ResidueClass    -- No element of G is a residue class 
+    residues in ResidueClass->G.elements
+    no r : ResidueClass | r in G.elements
+    no r : ResidueClass | !(r in Q.elements)
+    no G.elements & Q.elements    -- No element of G is a residue class 
     ResidueClass.residues in Element -- Residues only have elements (not other residues)
     all a : G.elements | {           -- Each residue corresponds to a coset
         some res : Q.elements {
+            res.residues = leftCoset[a, N, G]
+        }
+    }
+    all res : Q.elements | {           -- Each coset corresponds to a residue class
+        some a : G.elements {
             res.residues = leftCoset[a, N, G]
         }
     }
@@ -114,14 +123,18 @@ pred validQuotientGroup[Q : QuotientGroup, N : Group, G : Group] {
             e1->e2->e3 in G.table
         }
     }
+    closed[Q]
 }
 
 -- All instances should make Q isomorphic to C3
 run {
     some disj G, N : Group | some Q : QuotientGroup {
-        order[G] = 6
-        order[N] = 2
         axioms[G]
         validQuotientGroup[Q, N, G]
+        // G.elements = Elements & ResidueClass
+        order[G] = 6
+        !trivial[N]
+        !trivial[Q]
+        order[Q] = 3
     }
-} for exactly 1 QuotientGroup, exactly 3 Group, 10 Element, 4 ResidueClass
+} for exactly 1 QuotientGroup, exactly 3 Group, 12 Element, 4 ResidueClass
