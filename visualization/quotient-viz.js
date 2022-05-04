@@ -3,9 +3,10 @@ d3.selectAll("svg > *").remove();
 var lineGenerator = d3.line();
 // Can display elements as letters or colors
 const DISPLAY_TYPE = "letters"; //"colors" or "letters"
-const COLOR_SCHEME = "normal"; //"normal", "pastel", "ruby", "sandstone"
+const BOX_STROKE = 0; //stroke around each table cell
 
 const quotientColors = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff", "#bdb2ff", "#ffc6ff"]
+// Element String -> ResidueClass String
 const resMap = {}
 
 function printValue(row, col, yoffset, value) {
@@ -81,7 +82,7 @@ function printResidue(res, placed, eltNum) {
 // residue classes -> color
 const colorMap = {}
 
-
+//Print residue classes (circles)
 var placed = 0
 for (b = 0; b <= 20; b++) {
     if (ResidueClass.atom("Element" + b) != null) {
@@ -90,6 +91,7 @@ for (b = 0; b <= 20; b++) {
         placed++
     }
 }
+
 
 function drawArrow(startx, starty, endx, endy, color, disp) {
     midpointX = (startx + endx) / 2
@@ -175,7 +177,8 @@ function printRect(row, col, yoffset, value) {
         .attr('y', (col + 1.36) * 30 + yoffset)
         .attr('width', 30)
         .attr('height', 30)
-        .attr('stroke-width', 2)
+        .attr('stroke-width', BOX_STROKE)
+        .attr('stroke', 'black')
         .attr('fill', value);
 }
 
@@ -236,13 +239,9 @@ function printGroup(groupAtom, yoffset) {
                                 // var val = 'black'
                                 prod = groupAtom
                                     .table[Element.atom("Element" + r)][Element.atom("Element" + c)].toString()
-                                        // printValue(colorMap[ResidueClass.atom("Element"+p)], 100, 100+p*10)
-                                        var val = colorMap[Element.atom(resMap[prod])]
-                                        printRect(r, c, yoffset + 10, val)
-                                    
-                                    
-                                
-                                
+                                // printValue(colorMap[ResidueClass.atom("Element"+p)], 100, 100+p*10)
+                                var val = colorMap[Element.atom(resMap[prod])]
+                                printRect(r, c, yoffset + 10, val)
                             }
                         }
                     }
