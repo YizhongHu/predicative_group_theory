@@ -12,13 +12,19 @@ open "group-defs.frg"
 -- a combination (under the group operation) of finitely many
 -- elements of S and their inverses.
 one sig Generator {
-    generatingSet: set Element
+    ident: func Group->Element,
+    generatingSet: set Group->Element,
+    graph: pfunc Group->Element->Element->Element
+    // representation: pfunc Group->Element->Element->Element
 }
 
 -- Constrains the validity of a generating set: A generating set here is a subset of the
 -- group elements with minimal (no redundancies) generation.
 pred validGenerator[G: Group] {
-    let id = identity[G], generator = (Generator.generatingSet) | {
+    let id = Generator.ident[G], generator = (Generator.generatingSet[G]) | {
+        -- Valid identity
+        id = identity[G]
+
         -- Every element can be obtained by chaining generator operations (left operations)
         -- from the identity
         G.elements = id.(^(generator.(G.table)))
@@ -29,9 +35,21 @@ pred validGenerator[G: Group] {
         no gen: generator | {
             some (((generator - gen)->gen) & ^((generator - gen).(G.table)))
         }
+    }
+}
 
+pred generatorRepresentation[G: Group] {
+    let id = Generator.ident[G], generator = (Generator.generatingSet[G])| {
         -- Constrain the Cayley Graph
-        // Generator.graph[G] = (generator->G.elements->G.elements & G.table)
+        Generator.graph[G] = (G.elements->generator->G.elements & G.table)
+
+        // -- g1->h->g2 means that h * g2 = g1
+        // representation in {g1: (G.elements - id), g2: G.elements, h: generator | h->g2->g1 in G.table}
+        // -- The representation follows a tree structure
+        // let tree = representation.generator | {
+        //     all g: (G.elements - id) | g->id in ^tree
+        //     all g: G.elements | lone g.tree
+        // }
     }
 }
 
@@ -55,6 +73,14 @@ pred cyclicAlternative[G: Group] {
     one Generator.generatingSet[G]
 }
 
+run {
+    properlyGenerated
+    all G: Group | {
+        generatorRepresentation[G]
+        order[G] = 6
+    }
+} for exactly 1 Group, exactly 1 Generator, exactly 6 Element
+
 /* -------------------------- Cayley Graphs ------------------------- */
 /* An element node is a node of a Cayley graph representing an        */
 /* element of the group. We distinguish this sig from the Element     */
@@ -72,7 +98,7 @@ pred wellFormedCayleyGraph[G : Group] {
     -- Two element nodes n1 and n2 are connected if and only if their elements are such
     -- that n1 * s = n2 for some s in the generating set.
     all n1, n2 : ElementNode {
-        n1->n2 in neighbors iff {some s : Generator.generatingSet | G.table[n1.elt, s] = n2.elt}
+        n1->n2 in neighbors iff {some s : Generator.generatingSet[G] | G.table[n1.elt, s] = n2.elt}
     }
 }
 /* ----------------------- Graph Theory Tools ------------------------- */
