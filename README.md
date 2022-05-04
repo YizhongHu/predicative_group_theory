@@ -11,9 +11,7 @@
 
 ## What are we modeling?
 
-Group theory is a way of connecting and generalizing basic structures in mathematics and nature, especially those seen in 
-numbers sets like the integers, geometry, and polynomials. As such, it holds an important role, both in abstract algebra
-and a wide array of mathematics. With this in mind, we have two goals:
+Group theory is a way of connecting and generalizing basic structures in mathematics and nature, especially those seen in numbers sets like the integers, geometry, and polynomials. As such, it holds an important role, both in abstract algebra and a wide array of mathematics. With this in mind, we have two goals:
 - Model the notion of a group, and generate different groups using Forge.
 - Show basic properties and theorems of groups hold for small-ordered finite groups.
 
@@ -36,12 +34,9 @@ Testing<br/>
 ### Groups
 A **group** (`Group`) is a set (of `Element`) together with a binary operation (`table`) that acts on the set, which satisfies three axioms:
 - Identity: (`haveIdentity`) The group contains an element *e* such that for all *g* in the group, *ge = eg = G*.
-- Inverse: (`haveInverse`) Each element in the group has an inverse, i.e. for each element *g*, there is a *g⁻¹* such that 
-  *gg⁻¹ = 1*.
+- Inverse: (`haveInverse`) Each element in the group has an inverse, i.e. for each element *g*, there is a *g⁻¹* such that *gg⁻¹ = 1*.
 - Associativity: (`associativity`) For all elements *g₁, g₂, g₃ ∈ G*, it holds that *g₁(g₂g₃) = (g₁g₂)g₃*.<br/><br/>
-These axioms bestow a sense of structure on the set. Some common examples of finite groups are the set of integers modulo some number with 
-addition, the set of permutations of a set with the operation of doing one permutation after the other, and the set of symmetries of a 
-polygon. We'll define some terminology that will prove useful:
+These axioms bestow a sense of structure on the set. Some common examples of finite groups are the set of integers modulo some number with addition, the set of permutations of a set with the operation of doing one permutation after the other, and the set of symmetries of a polygon. We'll define some terminology that will prove useful:
 
 <div align="center">
  
@@ -55,8 +50,7 @@ polygon. We'll define some terminology that will prove useful:
 </div>
 
 ### Subgroups
-After defining group axioms and properties, it's not a far step to let ourselves be curious about subsets of groups. We'll define the notion 
-of subsets of a group which also abide by the group axioms as a **subgroup**. In fact, we can be more minimal about our definition:
+After defining group axioms and properties, it's not a far step to let ourselves be curious about subsets of groups. We'll define the notion of subsets of a group which also abide by the group axioms as a **subgroup**. In fact, we can be more minimal about our definition:
 ```
 pred subgroup[H: Group, G: Group] {
     subset[H, G]
@@ -74,10 +68,7 @@ As an immediate result, we can show Lagrange's theorem. This is typically done b
 talk about generators and Cayley graphs
 
 ### Homomorphisms
-A natural next step when dealing with groups might be wondering how different (or secretly the same!) groups relate to each other. This is 
-the motivation behind homomorphisms. A **group homomorphism** is a map between two groups which maintains the 
-algebraic structure of the domain. Formally, for groups G and H, φ: G → H such that for g₁, g₂ ∈ G, φ(g₁ ⋆ g₂) = φ(g₁) ⬝ φ(g₂). We can classify
-homomorphisms based on how they relate their domain and codomain:
+A natural next step when dealing with groups might be wondering how different (or secretly the same!) groups relate to each other. This is the motivation behind homomorphisms. A **group homomorphism** is a map between two groups which maintains the algebraic structure of the domain. Formally, for groups G and H, φ: G → H such that for g₁, g₂ ∈ G, φ(g₁ ⋆ g₂) = φ(g₁) ⬝ φ(g₂). We can classify homomorphisms based on how they relate their domain and codomain:
 
 <div align="center">
 
@@ -94,11 +85,7 @@ homomorphisms based on how they relate their domain and codomain:
 ## Visualizers
 To make understanding Forge's output easier, we've included two visualizers:
 - [Cayley Table Visualizer](https://github.com/YizhongHu/final_project/blob/master/visualization/group-viz.js)<br/>
-  This visualizer displays the Cayley table of all groups in the instance. The output is read as the cell in row *i* 
-  and column *j* is *i ⬝ j*. At the top of the script, there are two variables the user can manually change: the 
-  `DISPLAY_TYPE` and `COLOR_SCHEME` variables. Setting the former to `"colors"` removes the letters and replaces them 
-  with colored rectangles, where each element has a unique color. Changing `COLOR_SCHEME` to `"normal"`, `"pastel"`, 
-  `"ruby"`, or `"sandstone"` changes the color scheme. The following are some example outputs:<br/>
+  This visualizer displays the Cayley table of all groups in the instance. The output is read as the cell in row *i* and column *j* is *i ⬝ j*. At the top of the script, there are two variables the user can manually change: the `DISPLAY_TYPE` and `COLOR_SCHEME` variables. Setting the former to `"colors"` removes the letters and replaces them with colored rectangles, where each element has a unique color. Changing `COLOR_SCHEME` to `"normal"`, `"pastel"`, `"ruby"`, or `"sandstone"` changes the color scheme. The following are some example outputs:<br/>
  <p align="center">
   <img src="visualization/CayleyTableEx.png" alt="The Cayley Table of the Group (C__2 x C__2)" width="200"/>
   <img src="visualization/TwoColorEx.png" alt="Two Groups as Colored Cayley Tables" width="100"/>
@@ -112,35 +99,25 @@ To make understanding Forge's output easier, we've included two visualizers:
    <img src="visualization/ExampleTiling1.png" alt="Some Tiling of Group of Order 4" width="200"/>
   <img src="visualization/ExampleTiling2.png" alt="Some Tiling of Group of Order 8" width="200"/>
   <img src="visualization/ExampleTiling3.png" alt="Some Tiling of Group of Order 8" width="200"/>
- <p/>
+  <p/>
 
 - [Quotient Group Visualizer](https://github.com/YizhongHu/final_project/blob/master/visualization/quotient-viz.js)<br/>
-This visualizer displays a `QuotientGroup` sig and the Cayley table of the `Group` that it comes from (the unquotiented group). 
-Each circle is a residue class, and the "arms" extending from each of the circles represents the relationship between residue 
-classes (the circle at the end of an arm is the "hand", so each arm belongs to the circle which is closest to its flat end). 
-A circle of color *X* with an arm of color *Y* grabbing on to a group of color *Z* means that for all *x ∈ X*, *y ∈ Y*, 
-there is some *z ∈ Z*, such that *x ⬝ y = z*.</br>
-There are variables `DISPLAY_TYPE`, which can be changed to "letters" or "colors", changing the Cayley table; and `BOX_STROKE`, 
-which can be set to increase the cell-borders of the Cayley table when "colors" is selected to reveal the original group inside 
-the quotiented group. The following are some interesting outputs:</br>
+This visualizer displays a `QuotientGroup` sig and the Cayley table of the `Group` that it comes from (the unquotiented group). Each circle is a residue class, and the "arms" extending from each of the circles represents the relationship between residue classes (the circle at the end of an arm is the "hand", so each arm belongs to the circle which is closest to its flat end). A circle of color *X* with an arm of color *Y* grabbing on to a group of color *Z* means that for all *x ∈ X*, *y ∈ Y*, there is some *z ∈ Z*, such that *x ⬝ y = z*.</br>
+There are variables `DISPLAY_TYPE`, which can be changed to "letters" or "colors", changing the Cayley table; and `BOX_STROKE`, which can be set to increase the cell-borders of the Cayley table when "colors" is selected to reveal the original group inside the quotiented group. The following are some interesting outputs:</br>
 <p align="center">
    <img src="visualization/QuotientEx1.png" alt="Quotient group isomorphic to C3" width="200"/>
   <img src="visualization/QuotientEx2.png" alt="Quotient group isomorphic to C4, letters" width="200"/>
   <img src="visualization/QuotientEx3.png" alt="Quotient group isomorphic to C4, colors" width="200"/>
  <p/>
-Notice something interesting about the colored Cayley table: because 
-the quotient needs to be isomorphic to a group, each residue class forms a block in the quotiented table (e.g. in the first image above, 
-each colored cell of the table is actually a 2x2 of smaller cells of the unquotiented group). This gives us a geometric proof of Lagrange's theorem for normal subgroups, i.e. the order of a normal subgroup must
-divide the order of the group.
+Notice something interesting about the colored Cayley table: because the quotient needs to be isomorphic to a group, each residue class forms a block in the quotiented table (e.g. in the first image above, each colored cell of the table is actually a 2x2 of smaller cells of the unquotiented group). This gives us a geometric proof of Lagrange's theorem for normal subgroups, i.e. the order of a normal subgroup must divide the order of the group.
 <details>
 <summary>Why?</summary>
 <br>
-Consider what would happen if the order of a normal subgroup didn't divide the order of the group. Suppose we quotiented the group by this normal subgroup. Because each coset would be the same size, we could make a subdivision of same-sized squares in the larger table. This leads to a contradiction.
+Consider what would happen if the order of a normal subgroup didn't divide the order of the group. Let <i>Q = G/N</i> be the quotient group made by modding <i>G</i> by the normal subgroup <i>N</i>, and say <i>N</i> has an order <i>n</i> that doesn't divide the order of <i>G</i>, <i>g</i>. Because each coset of <i>N</i> would be the same size, the Cayley table of <i>Q</i> would be divided equally (the cosets can't overlap) into <i>n x n</i> squares. Since we can't divide a <i>g x g</i> square equally into <i>n x n</i> squares, this is a contradiction.
 </details>
 
 ## List of Results
-The following is a list of propositions, lemmas, and theorems that we've "proved" to hold (at least for finite
-groups of low order). Let *G* be a group, *H* a subgroup, *g*, *gᵢ* ∈ *G*, *h*, *hᵢ* ∈ *H*.
+The following is a list of propositions, lemmas, and theorems that we've "proved" to hold (at least for finite groups of low order). Let *G* be a group, *H* a subgroup, *g*, *gᵢ* ∈ *G*, *h*, *hᵢ* ∈ *H*.
 
 ### Small propositions
 - *G* has only one identity element.
