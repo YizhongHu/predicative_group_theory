@@ -3,6 +3,7 @@
 # Group Theory
 - [What are we modeling?](#what-are-we-modeling)
 - [File Structure](#file-structure)
+- [Design Considerations](#design-considerations)
 - [Overview](#overview)
 - [Visualizers](#visualizers)
 - [List of Results](#list-of-results)
@@ -33,11 +34,11 @@ Testing<br/>
 ## Design Considerations
 There are various ways to approach group theory, whether that be in terms of content, which of the equivalent definitions to use, etc. As such, there have been many instances where we've had to weigh our options and choose a nonobvious solution.
 
-For example, the `cyclic` predicate seemed easy to us, at least at first. We struggled with defining it in the obvious manner, but then we had the idea of using a different definition — a group is cyclic if and only if it has one generator. And this allowed us to write a simpler and cleaner version of the predicate.
+For example, the `cyclic` predicate seemed easy to us, at least at first. We struggled with defining it in the obvious manner, but then we had the idea of using a different definition — a group is cyclic if and only if it has one generator. And this allowed us to write a simpler and cleaner version of the predicate. Here, we sacrificed efficiency for clarity.
 
-While defining a normal subgroup, we also had many issues. We tried defining it as a subgroup where the set of left cosets and the set of right cosets are equal. While this was easier to write, since we already defined cosets, it was quite inefficient. So we decided to consider the many alternative definitions of a normal group, finally landing on the definition concerning invariance under conjugation.
+While defining a normal subgroup, we also had many issues. We tried defining it as a subgroup where the set of left cosets and the set of right cosets are equal. While this was easier to write, since we already defined cosets, it was quite inefficient. So we decided to consider the many alternative definitions of a normal group, finally landing on the definition concerning invariance under conjugation. Here, we sacrificed clarity for efficiency.
 
-While we made serious efforts to optimize our code, we generally favored clarity and rigor over efficiency. Since correct and memorable definitions are very important in building up any mathematical topic, we wanted our definitions to be readable (less field/set-table notation and more math-adjacent syntax) and consistent.
+While we made serious efforts to optimize our code, we generally favored clarity and rigor over efficiency, but looked for balances when appropriate. Since correct and memorable definitions are important in building up any mathematical topic, we wanted our definitions to be readable (less field/set-table notation and more math-adjacent syntax) and consistent.
 
 We tried to expand topics around homomorphisms, but ultimately felt bounded by first order logic. When we started, we didn't realize how much the study of homomorphisms relied on 'there is some homomorphism...' or 'all homomorphisms...,' which quantifies over functions, and thus exists above us in second order logic. Regardless, we were able to define homomorphisms and show whether a function we give is a homomorphism or not.
 
