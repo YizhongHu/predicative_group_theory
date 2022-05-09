@@ -30,7 +30,20 @@ Propositions, Lemmas, and Theorems<br/>
 Testing<br/>
 - [Tests](https://github.com/YizhongHu/final_project/blob/master/group-tests.frg)
 
+## Design Considerations
+There are various ways to approach group theory, whether that be in terms of content, which of the equivalent definitions to use, etc. As such, there have been many instances where we've had to weigh our options and choose a nonobvious solution.
+
+For example, the `cyclic` predicate seemed easy to us, at least at first. We struggled with defining it in the obvious manner, but then we had the idea of using a different definition — a group is cyclic if and only if it has one generator. And this allowed us to write a simpler and cleaner version of the predicate.
+
+While defining a normal subgroup, we also had many issues. We tried defining it as a subgroup where the set of left cosets and the set of right cosets are equal. While this was easier to write, since we already defined cosets, it was quite inefficient. So we decided to consider the many alternative definitions of a normal group, finally landing on the definition concerning invariance under conjugation.
+
+While we made serious efforts to optimize our code, we generally favored clarity and rigor over efficiency. Since correct and memorable definitions are very important in building up any mathematical topic, we wanted our definitions to be readable (less field/set-table notation and more math-adjacent syntax) and consistent.
+
+We tried to expand topics around homomorphisms, but ultimately felt bounded by first order logic. When we started, we didn't realize how much the study of homomorphisms relied on 'there is some homomorphism...' or 'all homomorphisms...,' which quantifies over functions, and thus exists above us in second order logic. Regardless, we were able to define homomorphisms and show whether a function we give is a homomorphism or not.
+
+Our goal originally was to explore and prove things about small-ordered groups. We were successful in doing this, but we stumbled across something pedagogical in the process. The visualizations we created conjured a new way of understanding groups. We were able to understand deeper structures in many groups by looking at the colored Cayley tables, quotient groups, and generator notation. That is to say, not only did we learn a lot about groups, but we also learned a new way to think about groups.
 ## Overview
+The following is an explanatory overview of the code.
 ### Groups
 A **group** (`Group`) is a set (of `Element`) together with a binary operation (`table`) that acts on the set, which satisfies three axioms:
 - Identity: (`haveIdentity`) The group contains an element *e* such that for all *g* in the group, *ge = eg = G*.
@@ -60,10 +73,19 @@ pred subgroup[H: Group, G: Group] {
 ```
 I.e., we only need to ensure that *H* is a subset of *G*, is closed, and contains the identity of *G*. <br/>
 As an immediate result, we can show Lagrange's theorem. This is typically done by first building up the notion of a coset, but we can test it exhaustively on small-ordered groups. <br/>
-- coset
-- normal subgroup
-- simple vs dedekind
-- how to make a quotient group
+We can now define **cosets**, which, when given a group `G` and a subgroup `H` of `G`, gives the set of all elements of `H` multiplied by some `a ∈ G`. We define the left and right cosets seperately: `leftCoset` and `rightCoset`.<br/>
+A **normal subgroup** is a subgroup invariant under conjugation, i.e.,
+```
+pred normalSubgroup[H, G: Group] {
+    subgroup[H, G]
+    all g : G.elements | all h : H.elements {
+        G.table[G.table[g, h], rightInverse[g, G]] in H.elements
+    }
+}
+```
+We can then say that a simple group (`simple`) is a group with no non-trivial normal subgroups, and a Dedekind group (`dedekind`) is a group where all subgroups are normal.<br/>
+All of this builds up to the notion of a quotient group. A **quotient group** (`QuotientGroup`) is a group constructed by taking a normal subgroup and all of its cosets as elements, which together are called residue classes, and having the operation between these elements be that of the original group. We do this by extending the `Element` sig to a `ResidueClass` sig, which has a field containing `Element`s. We constrain this field to contain only non-`ResidueClass` elements of the given group, and ensuring that it adheres to the constraints of quotient groups.
+
 ### Generators
 talk about generators and Cayley graphs
 
