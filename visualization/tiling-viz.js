@@ -16,7 +16,7 @@ BLUE2 = "";
 INDIGO2 = "";
 VIOLET2 = "";
 PINK2 = "";
-if(COLOR_SCHEME == "normal") {
+if (COLOR_SCHEME == "normal") {
     RED = "#df4772";
     ORANGE = "#ff9500";
     YELLOW = "#f6ff00";
@@ -26,7 +26,7 @@ if(COLOR_SCHEME == "normal") {
     VIOLET = "#bb0fe2";
     PINK = "#ff0ba1";
 }
-if(COLOR_SCHEME == "sixteen") {
+if (COLOR_SCHEME == "sixteen") {
     RED = "#00ffc8";
     ORANGE = "#00f8c8";
     YELLOW = "#00f0d0";
@@ -44,7 +44,7 @@ if(COLOR_SCHEME == "sixteen") {
     VIOLET2 = "#bb0fe2";
     PINK2 = "#9818b4";
 }
-if(COLOR_SCHEME == "normal") {
+if (COLOR_SCHEME == "normal") {
     RED = "#df4772";
     ORANGE = "#ff9500";
     YELLOW = "#f6ff00";
@@ -54,7 +54,7 @@ if(COLOR_SCHEME == "normal") {
     VIOLET = "#bb0fe2";
     PINK = "#ff0ba1";
 }
-if(COLOR_SCHEME == "pastel") {
+if (COLOR_SCHEME == "pastel") {
     // pastel color scheme
     RED = "#fde4cf";
     ORANGE = "#ffcfd2";
@@ -65,8 +65,8 @@ if(COLOR_SCHEME == "pastel") {
     VIOLET = "#8eecf5";
     PINK = "#98f5e1";
 }
-if(COLOR_SCHEME == "ruby") {
-// ruby color scheme
+if (COLOR_SCHEME == "ruby") {
+    // ruby color scheme
     RED = "#590d22";
     ORANGE = "#800f2f";
     YELLOW = "#a4133c";
@@ -76,7 +76,7 @@ if(COLOR_SCHEME == "ruby") {
     VIOLET = "#ff8fa3";
     PINK = "#ffb3c1";
 }
-if(COLOR_SCHEME == "sandstone") {
+if (COLOR_SCHEME == "sandstone") {
     // sandstone color scheme
     RED = "#ff8800";
     ORANGE = "#ff9500";
@@ -90,8 +90,8 @@ if(COLOR_SCHEME == "sandstone") {
 
 function getNumEls() {
     count = 0
-    for(i = 0; i <= 25; i++){
-        if(Element.atom("Element"+i) != null)
+    for (i = 0; i <= 25; i++) {
+        if (Element.atom("Element" + i) != null)
             count++
     }
     return count
@@ -110,27 +110,27 @@ function intToColor(int) {
 
 function printRect(row, col, yoffset, xoffset, value) {
     d3.select(svg)
-    .append('rect')
-    .attr('x', (row)*30*SCALE + xoffset)
-    .attr('y', (col)*30*SCALE + yoffset)
-    .attr('width', 30*SCALE)
-    .attr('height', 30*SCALE)
-    .attr('stroke-width', 2*SCALE)
-    .attr('fill', value);
+        .append('rect')
+        .attr('x', (row) * 30 * SCALE + xoffset)
+        .attr('y', (col) * 30 * SCALE + yoffset)
+        .attr('width', 30 * SCALE)
+        .attr('height', 30 * SCALE)
+        .attr('stroke-width', 2 * SCALE)
+        .attr('fill', value);
 }
 
 function printGroupUL(groupAtom, yoffset, xoffset) {
     // print table elements (NOTICE THIS BREAKS IF #ELEMENTS > 10)
     for (r = 0; r <= numEls; r++) {
         for (c = 0; c <= numEls; c++) {
-          if(Element.atom("Element"+r) != null) {
-            if(Element.atom("Element"+c) != null) {
-                var val = intToColor(groupAtom
-                    .table[Element.atom("Element"+r)][Element.atom("Element"+c)]
-                    .toString().slice(-1));
-                printRect(r, c, yoffset, xoffset, val)
+            if (Element.atom("Element" + r) != null) {
+                if (Element.atom("Element" + c) != null) {
+                    var val = intToColor(groupAtom
+                        .table[Element.atom("Element" + r)][Element.atom("Element" + c)]
+                        .toString().slice(-1));
+                    printRect(r, c, yoffset, xoffset, val)
+                }
             }
-          }
         }
     }
 }
@@ -139,14 +139,14 @@ function printGroupLL(groupAtom, yoffset, xoffset) {
     // print table elements (NOTICE THIS BREAKS IF #ELEMENTS > 10)
     for (r = 0; r <= numEls; r++) {
         for (c = 0; c <= numEls; c++) {
-          if(Element.atom("Element"+r) != null) {
-            if(Element.atom("Element"+c) != null) {
-                val = intToColor(groupAtom
-                    .table[Element.atom("Element"+r)][Element.atom("Element"+c)]
-                    .toString().slice(-1))
-                printRect(r, numEls - c - 1, yoffset, xoffset, val)
+            if (Element.atom("Element" + r) != null) {
+                if (Element.atom("Element" + c) != null) {
+                    val = intToColor(groupAtom
+                        .table[Element.atom("Element" + r)][Element.atom("Element" + c)]
+                        .toString().slice(-1))
+                    printRect(r, numEls - c - 1, yoffset, xoffset, val)
+                }
             }
-          }
         }
     }
 }
@@ -155,14 +155,14 @@ function printGroupUR(groupAtom, yoffset, xoffset) {
     // print table elements (NOTICE THIS BREAKS IF #ELEMENTS > 10)
     for (r = 0; r <= numEls; r++) {
         for (c = 0; c <= numEls; c++) {
-          if(Element.atom("Element"+r) != null) {
-            if(Element.atom("Element"+c) != null) {
-                val = intToColor(groupAtom
-                    .table[Element.atom("Element"+r)][Element.atom("Element"+c)]
-                    .toString().slice(-1))
-                printRect(numEls-r-1, c, yoffset, xoffset, val)
+            if (Element.atom("Element" + r) != null) {
+                if (Element.atom("Element" + c) != null) {
+                    val = intToColor(groupAtom
+                        .table[Element.atom("Element" + r)][Element.atom("Element" + c)]
+                        .toString().slice(-1))
+                    printRect(numEls - r - 1, c, yoffset, xoffset, val)
+                }
             }
-          }
         }
     }
 }
@@ -171,14 +171,14 @@ function printGroupLR(groupAtom, yoffset, xoffset) {
     // print table elements (NOTICE THIS BREAKS IF #ELEMENTS > 10)
     for (r = 0; r <= numEls; r++) {
         for (c = 0; c <= numEls; c++) {
-          if(Element.atom("Element"+r) != null) {
-            if(Element.atom("Element"+c) != null) {
-                val = intToColor(groupAtom
-                    .table[Element.atom("Element"+r)][Element.atom("Element"+c)]
-                    .toString().slice(-1))
-                printRect(numEls-r-1, numEls-c-1, yoffset, xoffset, val)
+            if (Element.atom("Element" + r) != null) {
+                if (Element.atom("Element" + c) != null) {
+                    val = intToColor(groupAtom
+                        .table[Element.atom("Element" + r)][Element.atom("Element" + c)]
+                        .toString().slice(-1))
+                    printRect(numEls - r - 1, numEls - c - 1, yoffset, xoffset, val)
+                }
             }
-          }
         }
     }
 }
@@ -187,25 +187,25 @@ function printGroupLR(groupAtom, yoffset, xoffset) {
 
 var yoffset = 0
 var xoffset = 0
-for(b = 0; b <= 2*(1/SCALE); b++) {  
+for (b = 0; b <= 2 * (1 / SCALE); b++) {
     xoffset = 0
-    for(t = 0; t <=2*(1/SCALE); t++){
+    for (t = 0; t <= 2 * (1 / SCALE); t++) {
         // upper left
-        if(b % 2 == 0 && t % 2 == 0)
-            printGroupUL(Group.atom("Group0"), yoffset, xoffset) 
+        if (b % 2 == 0 && t % 2 == 0)
+            printGroupUL(Group.atom("Group0"), yoffset, xoffset)
         // lower left
-        if (b % 2 == 1 && t % 2 == 0) 
-            printGroupLL(Group.atom("Group0"), yoffset, xoffset) 
+        if (b % 2 == 1 && t % 2 == 0)
+            printGroupLL(Group.atom("Group0"), yoffset, xoffset)
         // upper right
         if (b % 2 == 0 && t % 2 == 1)
-            printGroupUR(Group.atom("Group0"), yoffset, xoffset) 
+            printGroupUR(Group.atom("Group0"), yoffset, xoffset)
         // lower right
         if (b % 2 == 1 && t % 2 == 1)
-            printGroupLR(Group.atom("Group0"), yoffset, xoffset) 
+            printGroupLR(Group.atom("Group0"), yoffset, xoffset)
 
 
         xoffset = xoffset + 30 * numEls * SCALE
     }
-  yoffset = yoffset + 30 * numEls * SCALE
-  xoffset = 0
+    yoffset = yoffset + 30 * numEls * SCALE
+    xoffset = 0
 }

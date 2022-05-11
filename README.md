@@ -3,6 +3,7 @@
 # Group Theory
 - [What are we modeling?](#what-are-we-modeling)
 - [File Structure](#file-structure)
+- [Design Considerations](#design-considerations)
 - [Overview](#overview)
 - [Visualizers](#visualizers)
 - [List of Results](#list-of-results)
@@ -11,9 +12,7 @@
 
 ## What are we modeling?
 
-Group theory is a way of connecting and generalizing basic structures in mathematics and nature, especially those seen in 
-numbers sets like the integers, geometry, and polynomials. As such, it holds an important role, both in abstract algebra
-and a wide array of mathematics. With this in mind, we have two goals:
+Group theory is a way of connecting and generalizing basic structures in mathematics and nature, especially those seen in numbers sets like the integers, geometry, and polynomials. As such, it holds an important role, both in abstract algebra and a wide array of mathematics. With this in mind, we have two goals:
 - Model the notion of a group, and generate different groups using Forge.
 - Show basic properties and theorems of groups hold for small-ordered finite groups.
 
@@ -32,16 +31,26 @@ Propositions, Lemmas, and Theorems<br/>
 Testing<br/>
 - [Tests](https://github.com/YizhongHu/final_project/blob/master/group-tests.frg)
 
+## Design Considerations
+There are various ways to approach group theory, whether that be in terms of content, which of the equivalent definitions to use, etc. As such, there have been many instances where we've had to weigh our options and choose a nonobvious solution.
+
+For example, the `cyclic` predicate seemed easy to us, at least at first. We struggled with defining it in the obvious manner, but then we had the idea of using a different definition — a group is cyclic if and only if it has one generator. And this allowed us to write a simpler and cleaner version of the predicate. Here, we sacrificed efficiency for clarity.
+
+While defining a normal subgroup, we also had many issues. We tried defining it as a subgroup where the set of left cosets and the set of right cosets are equal. While this was easier to write, since we already defined cosets, it was quite inefficient. So we decided to consider the many alternative definitions of a normal group, finally landing on the definition concerning invariance under conjugation. Here, we sacrificed clarity for efficiency.
+
+While we made serious efforts to optimize our code, we generally favored clarity and rigor over efficiency, but looked for balances when appropriate. Since correct and memorable definitions are important in building up any mathematical topic, we wanted our definitions to be readable (less field/set-table notation and more math-adjacent syntax) and consistent.
+
+We tried to expand topics around homomorphisms, but ultimately felt bounded by first order logic. When we started, we didn't realize how much the study of homomorphisms relied on 'there is some homomorphism...' or 'all homomorphisms...,' which quantifies over functions, and thus exists above us in second order logic. Regardless, we were able to define homomorphisms and show whether a function we give is a homomorphism or not.
+
+Our goal originally was to explore and prove things about small-ordered groups. We were successful in doing this, but we stumbled across something pedagogical in the process. The visualizations we created conjured a new way of understanding groups. We were able to understand deeper structures in many groups by looking at the colored Cayley tables, quotient groups, and generator notation. That is to say, not only did we learn a lot about groups, but we also learned a new way to think about groups.
 ## Overview
+The following is an explanatory overview of the code.
 ### Groups
 A **group** (`Group`) is a set (of `Element`) together with a binary operation (`table`) that acts on the set, which satisfies three axioms:
 - Identity: (`haveIdentity`) The group contains an element *e* such that for all *g* in the group, *ge = eg = G*.
-- Inverse: (`haveInverse`) Each element in the group has an inverse, i.e. for each element *g*, there is a *g⁻¹* such that 
-  *gg⁻¹ = 1*.
+- Inverse: (`haveInverse`) Each element in the group has an inverse, i.e. for each element *g*, there is a *g⁻¹* such that *gg⁻¹ = 1*.
 - Associativity: (`associativity`) For all elements *g₁, g₂, g₃ ∈ G*, it holds that *g₁(g₂g₃) = (g₁g₂)g₃*.<br/><br/>
-These axioms bestow a sense of structure on the set. Some common examples of finite groups are the set of integers modulo some number with 
-addition, the set of permutations of a set with the operation of doing one permutation after the other, and the set of symmetries of a 
-polygon. We'll define some terminology that will prove useful:
+These axioms bestow a sense of structure on the set. Some common examples of finite groups are the set of integers modulo some number with addition, the set of permutations of a set with the operation of doing one permutation after the other, and the set of symmetries of a polygon. We'll define some terminology that will prove useful:
 
 <div align="center">
  
@@ -54,9 +63,8 @@ polygon. We'll define some terminology that will prove useful:
  
 </div>
 
-#### Subgroups
-After defining group axioms and properties, it's not a far step to let ourselves be curious about subsets of groups. We'll define the notion 
-of subsets of a group which also abide by the group axioms as a **subgroup**. In fact, we can be more minimal about our definition:
+### Subgroups
+After defining group axioms and properties, it's not a far step to let ourselves be curious about subsets of groups. We'll define the notion of subsets of a group which also abide by the group axioms as a **subgroup**. In fact, we can be more minimal about our definition:
 ```
 pred subgroup[H: Group, G: Group] {
     subset[H, G]
@@ -64,15 +72,26 @@ pred subgroup[H: Group, G: Group] {
     identity[G] in H.elements
 }
 ```
-I.e., we only need to ensure that *H* is a subset of *G*, is closed, and contains the identity of *G*. 
-#### Generators
+I.e., we only need to ensure that *H* is a subset of *G*, is closed, and contains the identity of *G*. <br/>
+As an immediate result, we can show Lagrange's theorem. This is typically done by first building up the notion of a coset, but we can test it exhaustively on small-ordered groups. <br/>
+We can now define **cosets**, which, when given a group `G` and a subgroup `H` of `G`, gives the set of all elements of `H` multiplied by some `a ∈ G`. We define the left and right cosets seperately: `leftCoset` and `rightCoset`.<br/>
+A **normal subgroup** is a subgroup invariant under conjugation, i.e.,
+```
+pred normalSubgroup[H, G: Group] {
+    subgroup[H, G]
+    all g : G.elements | all h : H.elements {
+        G.table[G.table[g, h], rightInverse[g, G]] in H.elements
+    }
+}
+```
+We can then say that a simple group (`simple`) is a group with no non-trivial normal subgroups, and a Dedekind group (`dedekind`) is a group where all subgroups are normal.<br/>
+All of this builds up to the notion of a quotient group. A **quotient group** (`QuotientGroup`) is a group constructed by taking a normal subgroup and all of its cosets as elements, which together are called residue classes, and having the operation between these elements be that of the original group. We do this by extending the `Element` sig to a `ResidueClass` sig, which has a field containing `Element`s. We constrain this field to contain only non-`ResidueClass` elements of the given group, and ensuring that it adheres to the constraints of quotient groups.
+
+### Generators
 talk about generators and Cayley graphs
 
-#### Homomorphisms
-A natural next step when dealing with groups might be wondering how different (or secretly the same!) groups relate to each other. This is 
-the motivation behind homomorphisms. A **group homomorphism** is a map between two groups which maintains the 
-algebraic structure of the domain. Formally, for groups G and H, φ: G → H such that for g₁, g₂ ∈ G, φ(g₁ ⋆ g₂) = φ(g₁) ⬝ φ(g₂). We can classify
-homomorphisms based on how they relate their domain and codomain:
+### Homomorphisms
+A natural next step when dealing with groups might be wondering how different (or secretly the same!) groups relate to each other. This is the motivation behind homomorphisms. A **group homomorphism** is a map between two groups which maintains the algebraic structure of the domain. Formally, for groups G and H, φ: G → H such that for g₁, g₂ ∈ G, φ(g₁ ⋆ g₂) = φ(g₁) ⬝ φ(g₂). We can classify homomorphisms based on how they relate their domain and codomain:
 
 <div align="center">
 
@@ -89,11 +108,7 @@ homomorphisms based on how they relate their domain and codomain:
 ## Visualizers
 To make understanding Forge's output easier, we've included two visualizers:
 - [Cayley Table Visualizer](https://github.com/YizhongHu/final_project/blob/master/visualization/group-viz.js)<br/>
-  This visualizer displays the Cayley table of all groups in the instance. The output is read as the cell in row *i* 
-  and column *j* is *i ⬝ j*. At the top of the script, there are two variables the user can manually change: the 
-  `DISPLAY_TYPE` and `COLOR_SCHEME` variables. Setting the former to `"colors"` removes the letters and replaces them 
-  with colored rectangles, where each element has a unique color. Changing `COLOR_SCHEME` to `"normal"`, `"pastel"`, 
-  `"ruby"`, or `"sandstone"` changes the color scheme. The following are some example outputs:<br/>
+  This visualizer displays the Cayley table of all groups in the instance. The output is read as the cell in row *i* and column *j* is *i ⬝ j*. At the top of the script, there are two variables the user can manually change: the `DISPLAY_TYPE` and `COLOR_SCHEME` variables. Setting the former to `"colors"` removes the letters and replaces them with colored rectangles, where each element has a unique color. Changing `COLOR_SCHEME` to `"normal"`, `"pastel"`, `"ruby"`, or `"sandstone"` changes the color scheme. The following are some example outputs:<br/>
  <p align="center">
   <img src="visualization/CayleyTableEx.png" alt="The Cayley Table of the Group (C__2 x C__2)" width="200"/>
   <img src="visualization/TwoColorEx.png" alt="Two Groups as Colored Cayley Tables" width="100"/>
@@ -107,12 +122,25 @@ To make understanding Forge's output easier, we've included two visualizers:
    <img src="visualization/ExampleTiling1.png" alt="Some Tiling of Group of Order 4" width="200"/>
   <img src="visualization/ExampleTiling2.png" alt="Some Tiling of Group of Order 8" width="200"/>
   <img src="visualization/ExampleTiling3.png" alt="Some Tiling of Group of Order 8" width="200"/>
+  <p/>
+
+- [Quotient Group Visualizer](https://github.com/YizhongHu/final_project/blob/master/visualization/quotient-viz.js)<br/>
+This visualizer displays a `QuotientGroup` sig and the Cayley table of the `Group` that it comes from (the unquotiented group). Each circle is a residue class, and the "arms" extending from each of the circles represents the relationship between residue classes (the circle at the end of an arm is the "hand", so each arm belongs to the circle which is closest to its flat end). A circle of color *X* with an arm of color *Y* grabbing on to a group of color *Z* means that for all *x ∈ X*, *y ∈ Y*, there is some *z ∈ Z*, such that *x ⬝ y = z*.</br>
+There are variables `DISPLAY_TYPE`, which can be changed to "letters" or "colors", changing the Cayley table; and `BOX_STROKE`, which can be set to increase the cell-borders of the Cayley table when "colors" is selected to reveal the original group inside the quotiented group. The following are some interesting outputs:</br>
+<p align="center">
+   <img src="visualization/QuotientEx1.png" alt="Quotient group isomorphic to C3" width="200"/>
+  <img src="visualization/QuotientEx2.png" alt="Quotient group isomorphic to C4, letters" width="200"/>
+  <img src="visualization/QuotientEx3.png" alt="Quotient group isomorphic to C4, colors" width="200"/>
  <p/>
-  
+Notice something interesting about the colored Cayley table: because the quotient needs to be isomorphic to a group, each residue class forms a block in the quotiented table (e.g. in the first image above, each colored cell of the table is actually a 2x2 of smaller cells of the unquotiented group). This gives us a geometric proof of Lagrange's theorem for normal subgroups, i.e. the order of a normal subgroup must divide the order of the group.
+<details>
+<summary>Why?</summary>
+<br>
+Consider what would happen if the order of a normal subgroup didn't divide the order of the group. Let <i>Q = G/N</i> be the quotient group made by modding <i>G</i> by the normal subgroup <i>N</i>, and say <i>N</i> has an order <i>n</i> that doesn't divide the order of <i>G</i>, <i>g</i>. Because each coset of <i>N</i> would be the same size, the Cayley table of <i>Q</i> would be divided equally (the cosets can't overlap) into <i>n x n</i> squares. Since we can't divide a <i>g x g</i> square equally into <i>n x n</i> squares, this is a contradiction.
+</details>
 
 ## List of Results
-The following is a list of propositions, lemmas, and theorems that we've "proved" to hold (at least for finite
-groups of low order). Let *G* be a group, *H* a subgroup, *g*, *gᵢ* ∈ *G*, *h*, *hᵢ* ∈ *H*.
+The following is a list of propositions, lemmas, and theorems that we've "proved" to hold (at least for finite groups of low order). Let *G* be a group, *H* a subgroup, *g*, *gᵢ* ∈ *G*, *h*, *hᵢ* ∈ *H*.
 
 ### Small propositions
 - *G* has only one identity element.

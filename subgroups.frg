@@ -125,16 +125,3 @@ pred validQuotientGroup[Q : QuotientGroup, N : Group, G : Group] {
     }
     closed[Q]
 }
-
--- All instances should make Q isomorphic to C3
-run {
-    some disj G, N : Group | some Q : QuotientGroup {
-        axioms[G]
-        validQuotientGroup[Q, N, G]
-        // G.elements = Elements & ResidueClass
-        order[G] = 6
-        !trivial[N]
-        !trivial[Q]
-        order[Q] = 3
-    }
-} for exactly 1 QuotientGroup, exactly 3 Group, 12 Element, 4 ResidueClass
