@@ -36,3 +36,16 @@ run {
         validDirectProduct[G, H, K]
     }
 } for exactly 1 DirectProductGroup, exactly 3 Group
+
+pred properDirectProduct {
+    all G: Group | axioms[G]
+    some disj G, H: Group, K: DirectProductGroup | {
+        validDirectProduct[G, H, K]
+    }
+}
+
+// test expect {
+//     tupleOfIdentityIsIdentity: {{properDirectProduct} => {
+
+//     }}
+// }
