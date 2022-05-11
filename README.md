@@ -1,13 +1,21 @@
 <img align="right" width="80" height="80" src="https://www.pngpix.com/wp-content/uploads/2016/07/PNGPIX-COM-Rubiks-Cube-Transparent-PNG-Image.png" alt="Rubik's Cube">
 
 # Group Theory
-- [What are we modeling?](#what-are-we-modeling)
-- [File Structure](#file-structure)
-- [Design Considerations](#design-considerations)
-- [Overview](#overview)
-- [Visualizers](#visualizers)
-- [List of Results](#list-of-results)
-- [Todo](#todos)
+- [Group Theory](#group-theory)
+  - [What are we modeling?](#what-are-we-modeling)
+  - [File Structure](#file-structure)
+  - [Design Considerations](#design-considerations)
+  - [Overview](#overview)
+    - [Groups](#groups)
+    - [Subgroups](#subgroups)
+    - [Generators](#generators)
+    - [Homomorphisms](#homomorphisms)
+  - [Visualizers](#visualizers)
+  - [List of Results](#list-of-results)
+    - [Small propositions](#small-propositions)
+    - [Lemmas](#lemmas)
+    - [Theorems](#theorems)
+  - [TODOs](#todos)
 <img align="right" width="80" height="50" src="https://pluspng.com/img-png/frog-png-hd-frog-png-image-free-download-image-frogs-image-43154-png-frogs-free-2010.png" alt="Froggy :D">
 
 ## What are we modeling?
@@ -54,12 +62,11 @@ These axioms bestow a sense of structure on the set. Some common examples of fin
 
 <div align="center">
  
-| Term        | Forge Pred |                                       Definition                                         | Example                 |
-| :---        |    :----:  | :----:                                                                                   |              ---:       |
-| Abelian     | `abelian`  | An abelian group is a commutative group, <br/>i.e. *g₁ * g₂ = g₂ * g₁* for all *g₂, g₁*.          | Integers mod 5, +       |
-| Cyclic      | `cyclic`   | A cyclic group is a group that can be generated<br/> by one element.                          | Integers mod 5, +       |
-| Order       | `order`    | The order of a group *G* (denoted *\|G\|*) is the<br/> number of elements in the group's set. | \|Integers mod 5\| = 5  |
-| todo  | ... | ... | ... |
+| Term    | Forge Pred |                                          Definition                                           |                Example |
+| :------ | :--------: | :-------------------------------------------------------------------------------------------: | ---------------------: |
+| Abelian | `abelian`  |   An abelian group is a commutative group, <br/>i.e. *g₁ * g₂ = g₂ * g₁* for all *g₂, g₁*.    |      Integers mod 5, + |
+| Cyclic  |  `cyclic`  |             A cyclic group is a group that can be generated<br/> by one element.              |      Integers mod 5, + |
+| Order   |  `order`   | The order of a group *G* (denoted *\|G\|*) is the<br/> number of elements in the group's set. | \|Integers mod 5\| = 5 |
  
 </div>
 
@@ -88,20 +95,19 @@ We can then say that a simple group (`simple`) is a group with no non-trivial no
 All of this builds up to the notion of a quotient group. A **quotient group** (`QuotientGroup`) is a group constructed by taking a normal subgroup and all of its cosets as elements, which together are called residue classes, and having the operation between these elements be that of the original group. We do this by extending the `Element` sig to a `ResidueClass` sig, which has a field containing `Element`s. We constrain this field to contain only non-`ResidueClass` elements of the given group, and ensuring that it adheres to the constraints of quotient groups.
 
 ### Generators
-talk about generators and Cayley graphs
 
 ### Homomorphisms
 A natural next step when dealing with groups might be wondering how different (or secretly the same!) groups relate to each other. This is the motivation behind homomorphisms. A **group homomorphism** is a map between two groups which maintains the algebraic structure of the domain. Formally, for groups G and H, φ: G → H such that for g₁, g₂ ∈ G, φ(g₁ ⋆ g₂) = φ(g₁) ⬝ φ(g₂). We can classify homomorphisms based on how they relate their domain and codomain:
 
 <div align="center">
 
-| Term           | Forge Pred    | Definition    |
-| :---           |    :----:     |         :---: |
-| Monomorphism   | `injective`   | A monomorphism is an injective homomorphism, i.e. one that guarentees<br/> a 1-to-1 mapping.                |
-| Epimorphism    | `surjective`  | An epimorphism is a surjective homomorphism, i.e. one such that the <br/> codomain is the image of the map. |
-| Isomorphism    | `isomorphism` | An isomorphism is an injective and surjective homomorphism. If there<br/> exists an isomorphism between two groups, then those groups are equal, up to notaion.                                                                                                         |
-| Endomorphism   | `endomorphism`| An endomorphism is a homomorphism from a group onto itself.                                                 |
-| Automorphism   | `automorphism`| An automorphism is a bijective endomorphism.                                                                |
+| Term         |   Forge Pred   |                                                                           Definition                                                                            |
+| :----------- | :------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| Monomorphism |  `injective`   |                                  A monomorphism is an injective homomorphism, i.e. one that guarentees<br/> a 1-to-1 mapping.                                   |
+| Epimorphism  |  `surjective`  |                           An epimorphism is a surjective homomorphism, i.e. one such that the <br/> codomain is the image of the map.                           |
+| Isomorphism  | `isomorphism`  | An isomorphism is an injective and surjective homomorphism. If there<br/> exists an isomorphism between two groups, then those groups are equal, up to notaion. |
+| Endomorphism | `endomorphism` |                                                   An endomorphism is a homomorphism from a group onto itself.                                                   |
+| Automorphism | `automorphism` |                                                          An automorphism is a bijective endomorphism.                                                           |
 
 </div>
  

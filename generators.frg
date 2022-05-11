@@ -15,7 +15,6 @@ one sig Generator {
     ident: func Group->Element,
     generatingSet: set Group->Element,
     graph: pfunc Group->Element->Element->Element
-    // representation: pfunc Group->Element->Element->Element
 }
 
 -- Constrains the validity of a generating set: A generating set here is a subset of the
@@ -42,14 +41,6 @@ pred generatorRepresentation[G: Group] {
     let id = Generator.ident[G], generator = (Generator.generatingSet[G])| {
         -- Constrain the Cayley Graph
         Generator.graph[G] = (G.elements->generator->G.elements & G.table)
-
-        // -- g1->h->g2 means that h * g2 = g1
-        // representation in {g1: (G.elements - id), g2: G.elements, h: generator | h->g2->g1 in G.table}
-        // -- The representation follows a tree structure
-        // let tree = representation.generator | {
-        //     all g: (G.elements - id) | g->id in ^tree
-        //     all g: G.elements | lone g.tree
-        // }
     }
 }
 
@@ -73,13 +64,6 @@ pred cyclicAlternative[G: Group] {
     one Generator.generatingSet[G]
 }
 
-run {
-    properlyGenerated
-    all G: Group | {
-        generatorRepresentation[G]
-        order[G] = 6
-    }
-} for exactly 1 Group, exactly 1 Generator, exactly 6 Element
 
 /* -------------------------- Cayley Graphs ------------------------- */
 /* An element node is a node of a Cayley graph representing an        */

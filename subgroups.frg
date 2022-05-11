@@ -34,14 +34,6 @@ pred divides[a: Int, b: Int] {
     }
 }
 
--- Lagrange's Theorem: For H a subgroup of G, the order of H divides the
--- order of G.
-// test expect {
-//     LagrangesTheorem: { all G, H: Group | {
-//         {axioms[G] and subgroup[H, G]} => {divides[order[H], order[G]]}}
-//         } for exactly 2 Group, 7 Element is theorem
-// }
-
 /*-------------------------------- Cosets --------------------------------*/
 /*       The left coset of a subgroup H of G and some element a is        */
 /*          aH = {ah : h in H}. The right coset is similar: Ha.           */
@@ -95,9 +87,7 @@ sig ResidueClass extends Element {
 
 sig QuotientGroup extends Group {}
 
--- TESTME
 pred validQuotientGroup[Q : QuotientGroup, N : Group, G : Group] {
-    --SIMPLIFY ME
     normalSubgroup[N, G]             -- N is a normal subgroup of G
     Q.elements in ResidueClass       -- Quotient Group only has residues as els
     residues in ResidueClass->G.elements

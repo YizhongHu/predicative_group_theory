@@ -80,10 +80,6 @@ pred abelian[G: Group] {
     all g1, g2 : G.elements | G.table[g1, g2] = G.table[g2, g1]
 }
 
--- TODO: is this possible conceptually?
-pred symmetric[G: Group] {
-}
-
 pred trivial[G: Group] {
     order[G] = 1
 }

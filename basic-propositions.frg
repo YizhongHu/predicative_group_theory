@@ -41,8 +41,8 @@ test expect {
 
 -- Tests/Props about subgroups
 test expect {
-    -- TODO: CAN'T FIGURE OUT WHY THIS IS BROKEN WHEN GROUP'S FUNC -> PFUNC
     -- A subgroup of a group is also abides by the group axioms.
+    -- WARNING: THIS TOOK 6 MINS TO RUN ON OUR COMPUTER
     subgroupIsGroup: { all G, H : Group | {
         {axioms[G] and subgroup[H, G]} => axioms[H]
     }} for exactly 2 Group, 6 Element is theorem
@@ -94,4 +94,12 @@ test expect {
             abelian[G] => dedekind[G]
         }
     } for exactly 1 Group, 3 Element is theorem -- have to set element count really low (higher order)
+}
+
+-- Lagrange's Theorem: For H a subgroup of G, the order of H divides the
+-- order of G.
+test expect {
+    LagrangesTheorem: { all G, H: Group | {
+        {axioms[G] and subgroup[H, G]} => {divides[order[H], order[G]]}}
+        } for exactly 2 Group, 7 Element is theorem
 }

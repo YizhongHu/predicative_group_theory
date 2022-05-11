@@ -10,7 +10,7 @@ example TrvialGroup is {properlyGenerated} for {
     table = `G0->`E0->`E0->`E0
 
     Generator = `Generator0
-    generatingSet = `Generator0->`E0
+    generatingSet = `Generator0->`G0->`E0
 }
 
 example CyclicGroupOfOrder2 is {properlyGenerated} for {
@@ -20,7 +20,7 @@ example CyclicGroupOfOrder2 is {properlyGenerated} for {
     table = `G0->`E0->`E0->`E0 + `G0->`E0->`E1->`E1 + `G0->`E1->`E0->`E1 + `G0->`E1->`E1->`E0
 
     Generator = `Generator0
-    generatingSet = `Generator0->`E1
+    generatingSet = `Generator0->`G0->`E1
 }
 
 example CyclicGroupOfOrder3 is {properlyGenerated} for {
@@ -32,7 +32,7 @@ example CyclicGroupOfOrder3 is {properlyGenerated} for {
           + `G0->`E2->`E1->`E0
 
     Generator = `Generator0
-    generatingSet = `Generator0->`E1
+    generatingSet = `Generator0->`G0->`E1
 }
 
 example C2byC2 is {properlyGenerated} for {
@@ -45,13 +45,15 @@ example C2byC2 is {properlyGenerated} for {
           + `G0->`E3->`E0->`E3 + `G0->`E3->`E1->`E2 + `G0->`E3->`E2->`E1 + `G0->`E3->`E3->`E0
 
     Generator = `Generator0
-    generatingSet = `Generator0->`E1 + `Generator0->`E2
+    generatingSet = `Generator0->`G0->`E1 + `Generator0->`G0->`E2
 }
 
 
 test expect {
     // cayleyGraphEdgeUnique: {{properlyGenerated} => {all G: Group | {
-    //     all g1, g2: G.elements | lone (Generator.graph[G]).g1.g2
+    //     all g1, g2: G.elements | lone gen: Generator.generatingSet[G] | {
+    //         g1->gen->g2 in (Generator.graph[G])
+    //     }
     // }}} for exactly 1 Group, 6 Element is theorem
 
     // cayleyGraphConnected: {{properlyGenerated} => {all G: Group | {
