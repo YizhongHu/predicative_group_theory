@@ -183,7 +183,7 @@ We can generate a Cayley Graph with the generator syntax. As we discussed,
 each directed edge in the Cayley Graph shows a generator operation from 
 one group element to another. We can use Sterling to help us see a Cayley
 Graph. First, we need to load `generator.frg`. We then need to constrain 
-`validGenerators` which makes sure that the generators and graphs are 
+`properCayley` which makes sure that the generators and graphs are 
 properly constrained. We then run some instance in Sterling. Once the group
 instance is shown on Sterling, select `Group` in time series projection.
 Then, in themes, load `cayleyGraph.json`. This makes sure that only
