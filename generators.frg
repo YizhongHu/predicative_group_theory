@@ -24,6 +24,9 @@ pred validGenerator[G: Group] {
         -- Valid identity
         id = identity[G]
 
+        -- generator is a subset of the group
+        generator in G.elements
+
         -- Every element can be obtained by chaining generator operations (left operations)
         -- from the identity
         G.elements = id.(^(generator.(G.table)))
@@ -49,6 +52,11 @@ pred properlyGenerated {
         axioms[G]
         validGenerator[G]
     }
+}
+
+pred properCayley {
+    properlyGenerated
+    all G: Group | generatorRepresentation[G]
 }
 
 -- A cyclic group is a group that can be expressed with one generator.

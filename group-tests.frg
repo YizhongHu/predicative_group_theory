@@ -48,21 +48,20 @@ example C2byC2 is {properlyGenerated} for {
     generatingSet = `Generator0->`G0->`E1 + `Generator0->`G0->`E2
 }
 
-
 test expect {
-    // cayleyGraphEdgeUnique: {{properlyGenerated} => {all G: Group | {
-    //     all g1, g2: G.elements | lone gen: Generator.generatingSet[G] | {
-    //         g1->gen->g2 in (Generator.graph[G])
-    //     }
-    // }}} for exactly 1 Group, 6 Element is theorem
+    cayleyGraphEdgeUnique: {{properCayley} => {all G: Group | {
+        all g1, g2: G.elements | lone gen: Generator.generatingSet[G] | {
+            g1->gen->g2 in (Generator.graph[G])
+        }
+    }}} for exactly 1 Group, 6 Element is theorem
 
-    // cayleyGraphConnected: {{properlyGenerated} => {all G: Group | {
-    //     let generator = (Generator.generatingSet[G]) | {
-    //         let edges = generator.(Generator.graph[G]) | {
-    //             ((G.elements)->(G.elements) - iden) in ^(edges + (~edges))
-    //         }
-    //     }
-    // }}} for exactly 1 Group, 6 Element is theorem
+    cayleyGraphConnected: {{properCayley} => {all G: Group | {
+        let generator = (Generator.generatingSet[G]) | {
+            let edges = {g1, g2: G.elements | some gen: generator | g1->gen->g2 in (Generator.graph[G])} | {
+                ((G.elements)->(G.elements) - iden) in ^(edges + (~edges))
+            }
+        }
+    }}} for exactly 1 Group, 6 Element is theorem
 }
 
 // run {
