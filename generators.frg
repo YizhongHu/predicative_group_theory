@@ -72,6 +72,14 @@ pred cyclicAlternative[G: Group] {
     one Generator.generatingSet[G]
 }
 
+run {
+    properlyGenerated
+    all G: Group | {
+        generatorRepresentation[G]
+        order[G] = 6
+    }
+} for exactly 1 Group, exactly 1 Generator, exactly 6 Element
+
 
 /* -------------------------- Cayley Graphs ------------------------- */
 /* An element node is a node of a Cayley graph representing an        */

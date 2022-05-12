@@ -1,15 +1,33 @@
 #lang forge
-open "group-defs.frg"
-open "generators.frg"
-open "homomorphisms.frg"
-open "subgroups.frg"
+open "../group-defs.frg"
+open "../generators.frg"
+open "../homomorphisms.frg"
+open "../subgroups.frg"
 
 /* This file contains interesting/informative examples of instances for the visualizers. */
 
 /* ------------------ group-viz.js ------------------ */
 
+// Groups 
+run {
+    all G : Group {
+        axioms[G]
+        order[G] = 6
+    }
+} for exactly 1 Group, exactly 6 Element
+
 
 // Homomorphisms
+run {
+    all G : Group | axioms[G] and order[G] = 4
+    all G1, G2 : Group | {
+        all hom : Homomorphism | {
+            validHomomorphism[hom]
+            (hom.domain = G1 and hom.codomain = G2) => !isomorphism[hom]
+        }
+    }
+
+} for exactly 2 Group, exactly 1 Homomorphism, 4 Element
 run {
     all G : Group | axioms[G]
     all hom : Homomorphism | {

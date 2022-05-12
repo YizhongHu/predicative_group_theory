@@ -143,7 +143,7 @@ A natural next step when dealing with groups might be wondering how different (o
 </div>
  
 ## Visualizers
-To make understanding Forge's output easier, we've included two visualizers:
+To make understanding Forge's output easier, we've included four visualizers, ([Demonstration](https://youtu.be/Ve37XGR1yAc)):
 - [Cayley Table Visualizer](https://github.com/YizhongHu/final_project/blob/master/visualization/group-viz.js)<br/>
   This visualizer displays the Cayley table of all groups in the instance. The output is read as the cell in row *i* and column *j* is *i ⬝ j*. At the top of the script, there are two variables the user can manually change: the `DISPLAY_TYPE` and `COLOR_SCHEME` variables. Setting the former to `"colors"` removes the letters and replaces them with colored rectangles, where each element has a unique color. Changing `COLOR_SCHEME` to `"normal"`, `"pastel"`, `"ruby"`, or `"sandstone"` changes the color scheme. The following are some example outputs:<br/>
  <p align="center">
@@ -178,7 +178,7 @@ Consider what would happen if the order of a normal subgroup didn't divide the o
 <br/>
 
 
-- [Cayley Graph Visualizer](ttps://github.com/YizhongHu/final_project/blob/master/visualization/cayleyGraph.json)<br/>
+- [Cayley Graph Visualizer](https://github.com/YizhongHu/final_project/blob/master/visualization/cayleyGraph.json)<br/>
 We can generate a Cayley Graph with the generator syntax. As we discussed, 
 each directed edge in the Cayley Graph shows a generator operation from 
 one group element to another. We can use Sterling to help us see a Cayley
