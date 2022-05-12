@@ -15,7 +15,6 @@
     - [Small propositions](#small-propositions)
     - [Lemmas](#lemmas)
     - [Theorems](#theorems)
-  - [TODOs](#todos)
 <img align="right" width="80" height="50" src="https://pluspng.com/img-png/frog-png-hd-frog-png-image-free-download-image-frogs-image-43154-png-frogs-free-2010.png" alt="Froggy :D">
 
 ## What are we modeling?
@@ -96,15 +95,12 @@ All of this builds up to the notion of a quotient group. A **quotient group** (`
 
 ### Generators
 
-A generating set is 
+A generating set (`Generator`) is a
 subset of the group that can reach every element in the
 group from the identity through right multiplication of
  either a member of the generating set or its inverse.
  For finite groups, this definition is equivalent to 
- that without inverses. Generator syntax is a great way
- to represent every single element in the group. However,
- in order for it to be readable, it needs to be at least 
- **minimal**.
+ that without inverses.
 
 A trivial generating set is just the group itself, but 
 that does not tell us much about the structure of the
@@ -116,12 +112,20 @@ When the generating set with the minimum number of
 elements has only one element, the group is considered
 cyclic.
 
-Generating sets makes it easy to visualize the group. 
-It can name the group elements in a more sensible way.
-This makes Cayley Tables more readable. Additionally, 
-if we represent right operation by a generator as an 
-edge between two group elements, we can draw a Cayley 
-Graph. 
+Additionally, if we represent right operation by a generator 
+as an edge between two group elements, we can draw a **Cayley 
+Graph**. We can associate to each element of the group a node 
+(`ElementNode`), and build up some graph theoretic tools to 
+understand Cayley graphs of groups. For instance, we can check 
+to see if a graph is planar.
+
+Call *ρ(Γ)* the *potential genus* of a group *Γ* if *ρ(Γ) = 𝛾(Cₛ(Γ))*
+for a minimal generating set *S* that yields maximal genus. In other words, take the 
+Cayley graphs of all minimal generating sets of *Γ*; then *ρ(Γ)* is the 
+ maximum genus across all of those graphs. By letting Forge 
+exhaustively check small-ordered Cayley graphs, we find that the only 
+graph such that *ρ(Γ) ≠ 0* is the quaternion group, which has 8 
+elements where *ρ(Γ) = 1*.
  
 ### Homomorphisms
 A natural next step when dealing with groups might be wondering how different (or secretly the same!) groups relate to each other. This is the motivation behind homomorphisms. A **group homomorphism** is a map between two groups which maintains the algebraic structure of the domain. Formally, for groups G and H, φ: G → H such that for g₁, g₂ ∈ G, φ(g₁ ⋆ g₂) = φ(g₁) ⬝ φ(g₂). We can classify homomorphisms based on how they relate their domain and codomain:
@@ -171,6 +175,7 @@ Notice something interesting about the colored Cayley table: because the quotien
 <br>
 Consider what would happen if the order of a normal subgroup didn't divide the order of the group. Let <i>Q = G/N</i> be the quotient group made by modding <i>G</i> by the normal subgroup <i>N</i>, and say <i>N</i> has an order <i>n</i> that doesn't divide the order of <i>G</i>, <i>g</i>. Because each coset of <i>N</i> would be the same size, the Cayley table of <i>Q</i> would be divided equally (the cosets can't overlap) into <i>n x n</i> squares. Since we can't divide a <i>g x g</i> square equally into <i>n x n</i> squares, this is a contradiction.
 </details>
+<br/>
 
 
 - [Cayley Graph Visualizer](ttps://github.com/YizhongHu/final_project/blob/master/visualization/cayleyGraph.json)<br/>
@@ -205,6 +210,8 @@ The following is a list of propositions, lemmas, and theorems that we've "proved
 - The identity of *G* is in *H*.
 - If *h ∈ H*, then *h⁻¹ ∈ H*.
 - *G* and *{id}* are subgroups of *G*.
+- Both *G* and *{id}* are normal.
+- *A₃* as a subgroup of *S₃* is normal.
 
 ### Lemmas
 - All cyclic groups are abelian.
