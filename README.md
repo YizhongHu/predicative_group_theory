@@ -208,10 +208,12 @@ The following is a list of propositions, lemmas, and theorems that we've "proved
 
 ### Lemmas
 - All cyclic groups are abelian.
+- All abelian groups are Dedekind groups.
 
 ### Theorems
 - Lagrange's Theorem: |H| divides |G|
-## TODOs
+- The quaternion group is the group of smallest order with potential genus of 1.
+<!-- ## TODOs
 Updated 4.23.22
 - group-defs.frg
   * [ ] symmetric pred
@@ -231,7 +233,7 @@ Updated 4.23.22
 - overall
   * [ ] think about optimization?
   * [ ] dip our toes into rings?
-  * [ ] refactor and fix tests
+  * [ ] refactor and fix tests -->
 
 <!-- - [x] Write predicates representing the group axioms: identity, inverse, associativity. Then write
    predicates that represent useful properties: abelian, cyclic, symmetric, permutation groups

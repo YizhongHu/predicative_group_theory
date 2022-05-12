@@ -69,3 +69,10 @@ run {
         order[G] = 6
     }
 } for exactly 1 Group, exactly 1 Generator, exactly 6 Element
+
+run {
+    all G : Group | {
+        properlyGenerated
+        wellFormedCayleyGraph[G]
+        !planar
+}} for exactly 1 Group, 8 Element, 8 ElementNode

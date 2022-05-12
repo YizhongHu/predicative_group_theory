@@ -34,7 +34,7 @@ pred validGenerator[G: Group] {
         -- ensure that it is a minimal generating set
         -- i.e. A generator cannot reach anther generator through some series of generator
         -- operations
-        no gen: generator | {
+        no gen : generator | {
             some (((generator - gen)->gen) & ^((generator - gen).(G.table)))
         }
     }
@@ -48,7 +48,7 @@ pred generatorRepresentation[G: Group] {
 }
 
 pred properlyGenerated {
-    all G: Group | {
+    all G : Group | {
         axioms[G]
         validGenerator[G]
     }
@@ -56,13 +56,13 @@ pred properlyGenerated {
 
 pred properCayley {
     properlyGenerated
-    all G: Group | generatorRepresentation[G]
+    all G : Group | generatorRepresentation[G]
 }
 
 -- A cyclic group is a group that can be expressed with one generator.
 pred cyclic[G: Group] {
     let id = identity[G] | {
-        some gen: G.elements | {
+        some gen : G.elements | {
             G.elements in id.^(gen.(G.table))
         }
     }
@@ -83,7 +83,7 @@ sig ElementNode {
     neighbors: set ElementNode
 }
 
-pred wellFormedCayleyGraph[G : Group] {
+pred wellFormedCayleyGraph[G: Group] {
     -- Every element has exactly one element node.
     all e : Element | some en : ElementNode | {en.elt = e}
     #Element = #ElementNode
@@ -99,7 +99,7 @@ pred wellFormedCayleyGraph[G : Group] {
 
 -- Two nodes are path connected if there is a sequence of edges that bridges
 -- one node to the other.
-pred pathConnected[en1, en2 : ElementNode] {
+pred pathConnected[en1, en2: ElementNode] {
     reachable[en1, en2, neighbors, ~neighbors]
 }
 
@@ -108,7 +108,7 @@ pred connected {
     all disj en1, en2 : ElementNode | pathConnected[en1, en2]
 }
 
-pred adjacent[en1, en2 : ElementNode] {
+pred adjacent[en1, en2: ElementNode] {
     en1->en2 in neighbors or en2->en1 in neighbors
 }
 //------ Kuratowski's Theorem ------//

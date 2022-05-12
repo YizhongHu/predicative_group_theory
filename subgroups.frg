@@ -28,7 +28,7 @@ pred subgroup[H: Group, G: Group] {
 pred divides[a: Int, b: Int] {
     a <= b
     a > 0
-    some c: Int | {
+    some c : Int | {
         c > 0 and c <= b
         multiply[a, c] = b
     }
@@ -39,7 +39,7 @@ pred divides[a: Int, b: Int] {
 /*          aH = {ah : h in H}. The right coset is similar: Ha.           */
 
 -- This function assumes: a is an element of G and H is a subgroup of G
-fun leftCoset[a : Element, H, G : Group]: Element {
+fun leftCoset[a: Element, H, G: Group]: Element {
     {g : G.elements | some h : H.elements | G.table[a, h] = g}
 }
 
@@ -60,7 +60,7 @@ pred normalSubgroup[H, G: Group] {
 }
 
 -- A simple group G is a group with only G and {id} as its normal subgroups
-pred simple[G : Group] {
+pred simple[G: Group] {
     all H : Group | {
         (subgroup[H, G] and !trivial[H] and H.elements != G.elements) =>
             !normalSubgroup[H, G]
@@ -68,7 +68,7 @@ pred simple[G : Group] {
 }
 
 -- A Dedekind group has only normal groups as subgroups
-pred dedekind[G : Group] {
+pred dedekind[G: Group] {
     all H : Group | {
         subgroup[H, G] => normalSubgroup[H, G]
     }
@@ -87,7 +87,7 @@ sig ResidueClass extends Element {
 
 sig QuotientGroup extends Group {}
 
-pred validQuotientGroup[Q : QuotientGroup, N : Group, G : Group] {
+pred validQuotientGroup[Q: QuotientGroup, N: Group, G: Group] {
     normalSubgroup[N, G]             -- N is a normal subgroup of G
     Q.elements in ResidueClass       -- Quotient Group only has residues as els
     residues in ResidueClass->G.elements

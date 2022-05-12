@@ -2,7 +2,6 @@
 open "group-defs.frg"
 open "generators.frg"
 open "subgroups.frg"
---NEED TO REFACTOR THIS PAGE BC NEW STUFF IN GENERATORS.FRG [does not run properly]
 example TrvialGroup is {properlyGenerated} for {
     Group = `G0
     Element = `E0
